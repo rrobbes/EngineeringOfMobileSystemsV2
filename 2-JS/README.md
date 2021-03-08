@@ -1,4 +1,4 @@
-# JavaScript, ES6 and Functional Programming
+# JavaScript and ES6
 
 Javascript is one of the most popular languages in the world. It is the language with the most repositories on [GitHub](https://octoverse.github.com/projects), and the most used in the annual StackOverflow [survey](https://insights.stackoverflow.com/survey/2018). Of note, on both of these rankings, TypeScript is rising rapidly.
 
