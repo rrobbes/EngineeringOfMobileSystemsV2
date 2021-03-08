@@ -2,7 +2,16 @@
 
 Javascript is one of the most popular languages in the world. It is the language with the most repositories on [GitHub](https://octoverse.github.com/projects), and the most used in the annual StackOverflow [survey](https://insights.stackoverflow.com/survey/2018). Of note, on both of these rankings, TypeScript is rising rapidly.
 
-To play around with Javascript, you need a JS interpreter. Your browser has one! You can also install [node](https://nodejs.org/en/).
+To play around with Javascript, you need a JS interpreter. Your browser has one: the development tools feature a javascript console. Alternatively, a website such as [repl.it](https://repl.it/languages/nodejs), or [expo snack](https://snack.expo.io) provide a more confortable UI to try out Javascript. You can also install [node](https://nodejs.org/en/) to use it locally.
+
+Importantly, in this class we don't want to cover all of Javascript. Javascript is a language that is large, and ``weird''. We will thus focus on the smallest and sanest subset of javascript that we need. In particular, we will focus on:
+
+- basic data types 
+- functions and basic control structures (if, switch)
+- javascript objects (not classes)
+- lists
+
+This, combined with the React native API, will be enough to do the work we need this semester
 
 ## A bit of history
 
@@ -41,7 +50,6 @@ Historically, incompatibilities between different implementations of Javascript 
 Due to its history, Javascript has some strange behavior. 
 
 
-
 ### Primitives
 
 Javascript has a handful of primitive types, which do not have associated methods.
@@ -54,7 +62,7 @@ Javascript has a handful of primitive types, which do not have associated method
 - symbol: a unique and immutable value, usable as a key for objects
 
 ### Objects and Prototypes
-Since it is influenced by Self, Javascript is a prototype-based OO language. Prototype-based OO languages don't have classes. Instead, a "prototype" can be cloned in order to create a new object similar to the previous one. The new object can then be modified to add new behaviour, by (even dynamically) adding new properties. While a prototype-based system can emulate classes (and vice-versa), it's not very convenient. In ES6, it is also possible to create classes.
+Since it is influenced by Self, Javascript is a prototype-based OO language. Prototype-based OO languages don't have classes. Instead, a "prototype" can be cloned in order to create a new object similar to the previous one. The new object can then be modified to add new behaviour, by (even dynamically) adding new properties. While a prototype-based system can emulate classes (and vice-versa), it's not very convenient. In ES6, it is also possible to create classes, although we won't use them.
 
 Object in Javascript are collections of properties, each with a key and a value. Since JS objects can have new properties, they can be used as hashmaps. ES6 also supports dedicated Maps, which have better performance. Objects can be declared in the following manner: `{key: 'value', key2: 32, key3: {nestedObject: {moreNesting: 'enoughNesting'}}}`.
 
@@ -75,39 +83,11 @@ For a fun take on this, have a look at the [wat video](https://www.destroyallsof
 
 ### Truthy and Falsy; `==` vs `===`
 
-Due to the implicit type conversions, in Javascript, a lot of things can evalaute to "true" or "false", which is convenient to write short if statements, but can be hard to understand at scale. To increase clarity, a stricter equality operator, with a more intuitive behaviour, was introduced. That's why most JS code uses `===` instead of `==`. Similarly, JS code uses `!==` rather than `!=`. For a nice summary of how `==`, `===`, `!=`, `!==` and `if()` work, have a look at [JavaScript equality table](https://dorey.github.io/JavaScript-Equality-Table/). The overall conclusion: always use `===` or `!==`, unless you have a very good reason not to.
+Due to the implicit type conversions, in Javascript, a lot of things can evalaute to "true" or "false", which is convenient to write short if statements, but can be hard to understand at scale. To increase clarity, a stricter equality operator, with a more intuitive behaviour, was introduced. That's why most JS code uses `===` instead of `==`. Similarly, JS code uses `!==` rather than `!=`. For a nice summary of how `==`, `===`, `!=`, `!==` and `if()` work, have a look at [JavaScript equality table](https://dorey.github.io/JavaScript-Equality-Table/). The overall conclusion: **always use `===` or `!==`**.
 
 ### Functions
 
-In Javascript (as in many other languages), functions can be passed as arguments to other functions, or returned from functions. This allows to define powerful abstractions. For instance, event handlers can take a function as argument, and call it when an event happens.
-
-```javascript
-var square = function(x) {
-    return x * x
-} 
-
-// I apply f twice
-var double = function(f, x) {
-    return f(f(x))
-} 
-
-double(square, 2)
-
-// I return a function that applies f twice
-var doubleAsFunc = function(f) {
-    return function(x) {
-        return f(f(x))
-    }
-}
-
-var quad = doubleAsFunc(doubleAsFunc(square))
-quad(2)
-```
-
-It helps to think about the types that these functions take and return. Here they are:
-- `square` takes a number and returns a number: `number => number`
-- `double` takes a function and applies it twice to its argument: `(x => x) x => x`
-- `doubleAsFunc` takes a function f, and returns a function g that applies f twice: `(x => x) => (x => x)`
+In Javascript (as in many other languages), functions are object that can be passed as arguments to other functions, or returned from functions. This allows to define powerful abstractions. For instance, event handlers can take a function as argument, and call it when an event happens. We will come back to this point several times during the class.
 
 ### Scope
 
@@ -118,9 +98,10 @@ Scope refers to how a declared variable is visible in a program. JS variables (d
 
 An undeclared variable will be declared as a global variable, which can lead to subtle and hard to track bugs.
 
+**Overall: `var` is extremely confusing and should not be used. ES6 Javascript has much better alternatives. I repead: do not use `var`**
 
 ### Strict mode
-Strict mode is an evalaution mode for Javascript that is less forgiving of errors. Errors will be thrown instead of being silently dealt with. Code that in ES6 modules is in strict mode, so most of the code you will write will be in strict mode. See more on strict mode [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
+Strict mode is an evaluation mode for Javascript that is less forgiving of errors. Errors will be thrown instead of being silently dealt with. Code that is in ES6 modules is in strict mode, so most of the code you will write will be in strict mode. See more on strict mode [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
 
 ## ES6
 
@@ -139,39 +120,29 @@ A nice summary of ES6 features is available [here](https://zellwk.com/blog/es6/)
 
 `let` and `const` variables essentially work as variables do in most other languages. They are block-scoped, and do not have hoisting. `let` variables can be redefined, while `const` variables can not. `const` variables should be preferred if possible. On the other hand, in ES6, `var` should **never be used**.
 
-### ES6 classes
-
-They work as classes in other languages, rather than prototypes. You can use them to define React Components with state, for instance.
-
-```javascript
-class CompExample extends React.Component{
-    constructor(props){
-        super(props)
-        // initialization
-    }
-
-    render() {
-        // render method 
-    }
-}
-```
-
-See more [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes).
-
 ### Arrow functions
 
-Arrow functions are shorter function definitions, which also have some differences in terms of scoping of the "this variable". Like so:
+Arrow functions are shorter function definitions, which also have some differences in terms of scoping of the `this variable`, which makes them more similar to other languages. One of the reasons I like them, is that they make it more obvious that functions are objects that can be stored in variables.
 
 ```javascript
-const square = function(x) {
+// "classic" function
+function square(x) {
     return x * x
 }
 
+// "arrow" function
+const square = x => {
+    return x * x
+}
+
+// shorter version of square
 const square = x => x * x
+
+// anonymous version (this will be useful later)
+x => x * x
 ```
 
-The previous example is extra-short since it also uses the `implicit return`. If there's only one instruction that also is returned, brackets and return can be omitted.
-Arrow functions can have any number of arguments:
+The previous two examples can be extra-short since it also uses the `implicit return`. If there's only one instruction that also is returned, brackets and return can be omitted. Arrow functions can have any number of arguments:
 
 ```javascript
 const oneArg = arg => {
@@ -186,29 +157,18 @@ const noArg = () => {
 const twoArgs = (x, y) => oneArg(x * y)
 ```
 
-In arrow functions, `this` is lexically bound, while in normal functions, the rules are more complex, making it harder to predict the value of `this` at runtime. In the context of React components, an arrow function defined as a callback will have `this` refer to the component itself, which is most of the time what we want.
-
-```javascript
-class CompExample extends React.Component{
-    something() { } //called by arrow function callback with proper this as expected
-
-    render() {
-        return 
-                (<Button title="button" onPress={() => this.something()} />);
-    }
-}
-```
-
 See more [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
 
-### Modules and imports
+Functions can have default parameter values, which is useful to call them with less arguments while still giving meaningful values to the arguments.
 
-ES6 allows code to be organized in modules, which can be imported by other modules. Each modules chooses which functions/classes/variables it wishes to export as well. There are a few ways to import/export modules, which takes a bit of time to get used to.
+```javascript
+const mul = (x = 9, y = 4) => x * y
+```
 
-See [imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) and [exports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export).
 
 ### Destructuring assignments and parameters
-Allow to efficiently access values of interest in arrays or objects. Note that not all properties need to be mentioned, only the ones we are interested in.
+
+Allow to efficiently access values of interest in arrays or objects. Note that not all properties need to be mentioned, only the ones we are interested in. We will use this frequently, so it's important to understand it well.
 
 ```javascript
 const allThree = ["first", "second", "third"]
@@ -226,17 +186,35 @@ console.log(greeting(jim))
 
 Note that we also use template strings here.
 
-### Default parameter values
+### Spread operators
 
-It's pretty much what the name says!
+These allow to perform copies of Javascript objects and lists. We will use these extensively, but we will see them later.
+
+
+### Modules and imports
+
+ES6 allows code to be organized in modules, which can be imported by other modules. Each modules chooses which functions/classes/variables it wishes to export as well. There are a few ways to import/export modules, which takes a bit of time to get used to.
+
+See [imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) and [exports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export).
+
+We will see this later, when we actually have to import the React API.
+
+### ES6 classes
+
+They work as classes in other languages, rather than prototypes. In the last version of the course, we could use them to define React Components with state, however this is no longer necessary, as React function components can now have state. So, we don't need to cover them anymore, which simplifies the course, as Javascript classes have subtleties that can introduce bugs, such as the odd behavior of `this` in Javascript, and in general introduce a significant amount of complexity. 
 
 ```javascript
-const mul = (x = 9, y = 4) => x * y
+class CompExample extends React.Component{
+    constructor(props){
+        super(props)
+        // initialization
+    }
+
+    render() {
+        // render method 
+    }
+}
 ```
 
-## Let's practice!
-After this introduction, you're ready to practice JS and ES6 with the [JS and ES6 koans](https://github.com/rrobbes/EngineeringOfMobileSystems/tree/master/lab1-jskoans).
+See more [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) (or don't, since we won't use them).
 
-## Next
-
-Continue on to [Functional Programming concepts](./FP.md)
