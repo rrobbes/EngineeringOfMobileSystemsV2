@@ -1,6 +1,6 @@
 # JavaScript and ES6
 
-Javascript is one of the most popular languages in the world. It is the language with the most repositories on [GitHub](https://octoverse.github.com/projects), and the most used in the annual StackOverflow [survey](https://insights.stackoverflow.com/survey/2018). Of note, on both of these rankings, TypeScript is rising rapidly.
+Javascript is one of the most popular languages in the world. It is the language with the most repositories on [GitHub](https://octoverse.github.com), and the most used in the annual StackOverflow [survey](https://insights.stackoverflow.com/survey/2018). Of note, on both of these rankings, TypeScript is rising rapidly.
 
 To play around with Javascript, you need a JS interpreter. Your browser has one: the development tools feature a javascript console. Alternatively, a website such as [repl.it](https://repl.it/languages/nodejs), or [expo snack](https://snack.expo.io) provide a more confortable UI to try out Javascript. You can also install [node](https://nodejs.org/en/) to use it locally.
 
