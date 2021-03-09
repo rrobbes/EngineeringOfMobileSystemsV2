@@ -4,14 +4,14 @@ Javascript is one of the most popular languages in the world. It is the language
 
 To play around with Javascript, you need a JS interpreter. Your browser has one: the development tools feature a javascript console. Alternatively, a website such as [repl.it](https://repl.it/languages/nodejs), or [expo snack](https://snack.expo.io) provide a more confortable UI to try out Javascript. You can also install [node](https://nodejs.org/en/) to use it locally.
 
-Importantly, in this class we don't want to cover all of Javascript. Javascript is a language that is large, and ``weird''. We will thus focus on the smallest and sanest subset of javascript that we need. In particular, we will focus on:
+Importantly, in this class we don't want to cover all of Javascript. Javascript is a language that is large, and "weird". We will thus focus on the smallest and sanest subset of javascript that we need. In particular, we will focus on:
 
 - basic data types 
 - functions and basic control structures (if, switch)
 - javascript objects (not classes)
 - lists
 
-This, combined with the React native API, will be enough to do the work we need this semester
+This, combined with the standard Javascript and React native API, will be enough to do the work we need this semester. Adding the security provided by Typescript (see next class), we will avoid quite a few bugs.
 
 ## A bit of history
 
