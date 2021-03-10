@@ -61,8 +61,8 @@ The matchers determine if a test will pass or not. The expression in the `expect
 So, the test `expect(1 == "1").toBeTruthy()` will pass. There is a huge list of matchers on testing, but we don't have to know all of them. The matchers we will use here are:
 
 - `.toBeTruthy()` and `.toBeFalsy()`. We expect the expression to be truthy or falsy
-- `.toEqual()`. We expect the expression to be equal than the value passed as a parameter, and it has also to be the same type: i.e. `expect(1).toBe(1)`
-- `.toBe()`. We expect the expression to be equal than the value passed as a parameter, but not necessary the same type: i.e. `expect(1).toBe("1")`
+- `.toEqual()`. We expect the expression to be equal to the value passed as a parameter, and it has also to be the same type: i.e. `expect(1).toBe(1)`
+- `.toBe()`. We expect the expression to be equal to the value passed as a parameter, but not necessary the same type: i.e. `expect(1).toBe("1")`
 - `not`. To negate the matcher.
 
 We will see there are a lot of matchers we can use. Right now we just need the ones described above to do the Koans.
