@@ -75,7 +75,7 @@ We will see there are a lot of matchers we can use. Right now we just need the o
 - Then open the file `./lab1-jskoans/index.html` with your browser. The title of the page should be `Jasmine Test Runner`.
 - You will see that all the tests are green, but most say `SPEC HAS NO EXPECTATIONS`. This is because the tests we have to implement are commented out.
 
-All the tests are located inside the `spec` folder (`lab1-jskoans/spec/koans.js`). Open the `koans.js` file and uncomment the following line:
+All the tests are located inside the `spec` folder (`lab1-jskoans/spec/koans.js`). Open the `koans.js` file in your text editor or IDE of choice, and uncomment the following line:
 
 ```javascript
  it("joins parts as string when using the plus operator", function() {
