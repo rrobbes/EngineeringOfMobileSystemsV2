@@ -10,7 +10,7 @@ Each subdirectory has a readme.md file which contains the actual notes, and poss
 The notes are stored with git. A git client can be used to download them. If you need to install one, you can use [Github Desktop](https://desktop.github.com).
 
 You can clone this repository with:
-`git clone https://github.com/rrobbes/EngineeringOfMobileSystems.git`
+`git clone https://github.com/rrobbes/EngineeringOfMobileSystemsV2.git`
 
 You can then update it with:
 `git pull`
