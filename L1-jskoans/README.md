@@ -101,3 +101,4 @@ Some things to keep in mind:
 - When changing the code, leave the `expect` lines unchanged! That would be cheating :-)
 - If you refresh the page and see a message like `No specs found` on a grey background, you probably have a syntax error.
 - You probably won't have time to finish everything today, but try to continue on your own time.
+- Don't get stuck to long an a single problem. If you need more than 5 minutes or so, try the next problem, and come back later.
