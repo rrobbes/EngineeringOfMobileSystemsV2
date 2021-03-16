@@ -346,8 +346,7 @@ type Threethings = [number, string, boolean]
 const weirdList:Threethings = [1, "hello", true]
 const weirdList2:Threethings = [1, "hello", true, 4]
 
-// To learn more about the language, click above in "Examples" or "What's New".
-// Otherwise, get started by removing these comments and the world is your playground.
+// Feel free to experiment some more in the playground!
   
 ```
 
