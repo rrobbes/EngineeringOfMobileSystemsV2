@@ -11,12 +11,12 @@ describe("JavaScript", function() {
     });
 
     it("knows that numbers and strings are not exactly the same", function() {
-      // expect(1 === "1").toBe......(); // Truthy or Falsy
-      // expect(1 !== "1").toBe......(); // Truthy or Falsy
+      expect(1 === "1").toBeFalsy(); // Truthy or Falsy
+      expect(1 !== "1").toBeTruthy(); // Truthy or Falsy
     });
 
     it("joins parts as string when using the plus operator", function() {
-      expect(1 + "a").toEqual(); // give the expected value as argument to toEqual()
+      expect(1 + "a").toEqual("1a"); // give the expected value as argument to toEqual()
     });
 
     it("operates integers before joining the string", function() {
