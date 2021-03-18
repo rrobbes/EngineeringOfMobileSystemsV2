@@ -45,7 +45,7 @@ Regarding the type system itself:
 Here are a few of Typescript's more concrete characteristics, briefly described:
 
 - **the `any` type**. This is a type that is compatible with all other types, and that can be used as an `escape hatch`, when it is hard to type a particular piece of code. While it is available, it should be avoided if possible.
-- **Postfix type annotations**. Unlike Java, where you would put the type first and the variable name second, Typescript does the opposite. For functions, the return type is specified after the arguments: `const add: (x: number, y: number) => number` defines the type of a function that takes two arguments, x, and y, both numbers, and returns a number.
+- **Postfix type annotations**. Unlike Java, where you would put the type first and the variable name second, Typescript does the opposite. For functions, the return type is specified after the arguments: `const add = (x: number, y: number): number => ...` defines a function that takes two arguments, x, and y, both numbers, and returns a number.
 - **Type aliases** can be defined to described types in a more succinct way, e.g. `type StringOrNum = string|number`. Type aliases support union types and allow to type objects as well, by typing each of the properties of the object. E.g.:
 - **Interfaces** can also be used to type objects with their properties. They can also be extended to define larger interfaces in terms of smaller ones (e.g. `Point3D extends Points2D`).
 
@@ -163,7 +163,7 @@ The first is the official Typescript website:
 - [Website](https://www.typescriptlang.org/index.html): overall website for Typescript
 - [Do's and Don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html): a few guidelines and common mistakes.
 - [Frequently Asked Questions](https://github.com/Microsoft/TypeScript/wiki/FAQ): Frequently asked questions about Typescript, that can clarify some misconceptions.
-- [Typescript playground](http://www.typescriptlang.org/play/#code): try out typescript without installing it.
+- [Typescript playground](http://www.typescriptlang.org/play/#code): try out typescript without installing it. It's also useful to see how Typescript is "compiled down" to Javascript.
 - [Typescript in five minutes](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html): A five-minutes high-level overview. 
 - [Typescript and React](https://www.typescriptlang.org/docs/handbook/react-&-webpack.html): tutorial on Typescript and how it works with React.
 
@@ -171,7 +171,184 @@ Other resources:
 - [A nice tutorial](https://www.valentinog.com/blog/typescript/): this one is a bit longer than the "official" one, and cover a few more basic Typescript concepts.
 - [Typescript Deep Dive](https://basarat.gitbooks.io/typescript/): **a very complete (and free!) book**.
 
+# Code example
 
+This is the example that we have seen in class, with a couple of additional code comments and examples to make offline reading easier. You can copy it and paste it in the [Typescript playground](http://www.typescriptlang.org/play/#code) to experiment with it.
+
+```typescript
+
+const anExampleVariable:string = "Hello World"
+
+// this is wrong! try to fix it :-)
+const someBoolean:number = true
+
+let x:string|boolean|null = "not null"
+
+if (x !== null) {
+    x 
+} else {
+    x
+}
+
+// a type that is a limited set of literals
+let smallOdd: 1|3|5|7|9 = 3
+
+interface Point {
+    x: number;
+    y: number;
+}
+
+interface Point3D extends Point {
+    z: number;
+}
+
+const p:Point = {x: 3, y: 0}
+
+const p3d:Point3D = {...p, z: 8}
+
+interface Vector {
+    x: number;
+    y: number;
+}
+
+// example of structural typing: Points and Vectors are compatible.
+const vectorFun = (vec: Vector): number => {
+    return vec.x + vec.y
+}
+
+vectorFun(p)
+vectorFun(p3d)
+
+
+
+const distance = (p1: Point, p2: Point):number => {
+    const dx: number = p2.x - p1.x
+    const dy: number = p2.y - p1.y
+    return Math.sqrt(dx * dx + dy * dy)
+}
+
+// alternative using destructuring assignment
+const distance2 = ({x, y}: Point, p2: Point):number => {
+    const dx: number = p2.x - x
+    const dy: number = p2.y - y
+    return Math.sqrt(dx * dx + dy * dy)
+}
+// note that we can not destructure both p1 and p2, because we would have name conflicts otherwise
+
+const p1: Point = {x: 2, y: 3}
+const p2: Point = {x: 2, y: 3}
+
+console.log(distance(p1, p2))
+
+
+
+// defining more complex objects
+
+interface Circle {
+    center: Point;
+    radius: number;
+}
+
+interface Square {
+    corner: Point;
+    side: number;
+}
+
+interface Ellipse {
+    center: Point;
+    radius1: number;
+    radius2: number;
+}
+
+interface Line {
+    start: Point;
+    end: Point;
+}
+
+const c: Circle = {center:  {x: 2, y: 3}, radius: 4}
+
+const sq: Square = {corner: {x: 2, y: 3}, side: 3}
+
+// a "union type" of possible objects
+// if we change the definition of this type, such as adding a new shape, 
+// Typescript will check where we use it to look for problems
+type Shape = Circle|Square|Ellipse|Line
+
+// if you comment out the previous Shape definition, and uncomment out the next one
+// this is still ok
+//interface Rectangle {
+//    corner: Point;
+//    width: number;
+//    height: number;
+//}
+// type Shape = Circle|Square|Ellipse|Line|Rectangle
+
+// this one is not ok 
+// we would need to change the implementation of ImportantPoint
+//interface Cone {
+//    apex: Point;
+//    base: Circle;
+//}
+//type Shape = Circle|Square|Ellipse|Line|Cone
+
+const importantPoint = (shape: Shape):Point => {
+    if ('center' in shape) {
+        return shape.center
+    } else if ('corner' in shape) {
+        return shape.corner
+    } else {
+        return shape.start
+    }
+}
+
+// this is a Line, and thus also a Shape, even if it has no type annotation
+// Typescript uses type inference to infer it
+const line = {start: {x: 2, y: 3}, end: {x: 4, y: 4}}
+
+console.log(importantPoint(c))
+const expectedPoint = importantPoint(line)
+console.log(expectedPoint.x)
+
+
+// this function has an error
+// typescript points out that we are missing one type of shapes, the Line
+const importantPointWrong = (shape: Shape):Point => {
+    if ('center' in shape) {
+        // in this branch the shape a Circle or an Ellipse
+        return shape.center
+    } else {
+        // in this branch the shape is everything else, so it is a Square or a Line
+        // however, a Line does not have a "corner" property
+        // so passing a Line object would return "undefined", not a point
+        return shape.corner
+    } 
+}
+
+const expectedPoint2 = importantPointWrong(line)
+// expectedPoint2 is not a Point, but undefined
+// however, Javascript would not have an error just yet
+// because that's how Javascript works 
+
+console.log(expectedPoint.x)
+// only when accessing a property on an undefined object would Javascript crash
+// it could take quite some debugging time to find out that the problem comes from the function
+// thankfully Typescript points out the error at the source!
+
+
+// Typescript also support list
+
+const nums:number[] = [1,2,3,4,5]
+const points:Point[] = [p1, p2, p, p3d]
+
+// Typescript suports "tuples" as list of elements, and can check them
+type Threethings = [number, string, boolean]
+
+const weirdList:Threethings = [1, "hello", true]
+const weirdList2:Threethings = [1, "hello", true, 4]
+
+// Feel free to experiment some more in the playground!
+  
+```
 
 
 
