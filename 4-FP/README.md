@@ -153,7 +153,7 @@ const num2point = (nums: number[]): Point[] => {
     return results
 }
 
-num2point([1,2,3,4]) // [{x: 0, y: 1}, {x: 0, y: 2}, {x: 0, y: 3}, {x: 0, y: 4}]
+num2point([1,2,3,4]) // [2, 4, 6, 8]
 ```
 
 Aren't these functions very similar? The only part that changes is the part that computes what to put in the result array.  Could we try to pass this as a parameter? Let's first do a version without worrying too much about types.
