@@ -130,7 +130,8 @@ interface Point {
 const doublex = (points: Point[]): Point[] => {
     let results = []
     for (let i = 0; i < points.length; i++) {
-        const doublex = {...points[i], x: points[i] * 2}
+        const originalPoint = points[i]
+        const doublex = {...originalPoint, x: originalPoint.x * 2}
         results.push(doublex)
     }
     return results
