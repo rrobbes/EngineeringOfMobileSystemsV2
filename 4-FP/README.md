@@ -4,9 +4,11 @@ Functional Programming is the process of building software by composing pure fun
 
 ## Characteristics of Functional Programming
 - Pure functions are predictable and reproducible
-- Separation: try to make one function do one thing only
+- Separation of concerns: try to make one function do one thing only
 - Composition: write functions whose outputs are the input of others
-- Immutability: mutating data erases its previous values Memoization: predictable functions are easier to cache - Parallelism: predictable functions are easy to parallelize
+- Immutability: mutating data erases its previous values 
+- Memoization: predictable functions are easier to cache
+- Parallelism: predictable functions are easy to parallelize
 
 ## Counter examples
 
