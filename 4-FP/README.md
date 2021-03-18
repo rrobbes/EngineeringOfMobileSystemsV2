@@ -269,7 +269,7 @@ const recursiveMap = <A, B> (list: A[], transform: transformFunc<A, B>): B[] => 
         // we recursively call map on the tail
         const processedTail = map(tail, transform)
         // we rebuild the full list
-        return [head, ...processedTail]
+        return [processed, ...processedTail]
     }
 }
 
