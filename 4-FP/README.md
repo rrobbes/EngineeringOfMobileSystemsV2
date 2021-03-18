@@ -137,7 +137,7 @@ const doublex = (points: Point[]): Point[] => {
     return results
 }
 
-doublex([{x:1 y:2}, {x: 3, y: 4}]) // [{x: 4, y: 2}, {x: 6, y: 4}]
+doublex([{x:1 y:2}, {x: 3, y: 4}]) // [{x: 2, y: 2}, {x: 6, y: 4}]
 ```
 
 Finally, suppose we need to take a list of numbers, and return a list of points, with 0 as the x coordinate, and one of the numbers as the y coordinate:
