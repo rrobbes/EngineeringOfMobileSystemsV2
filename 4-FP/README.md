@@ -4,9 +4,11 @@ Functional Programming is the process of building software by composing pure fun
 
 ## Characteristics of Functional Programming
 - Pure functions are predictable and reproducible
-- Separation: try to make one function do one thing only
+- Separation of concerns: try to make one function do one thing only
 - Composition: write functions whose outputs are the input of others
-- Immutability: mutating data erases its previous values Memoization: predictable functions are easier to cache - Parallelism: predictable functions are easy to parallelize
+- Immutability: mutating data erases its previous values 
+- Memoization: predictable functions are easier to cache
+- Parallelism: predictable functions are easy to parallelize
 
 ## Counter examples
 
@@ -96,6 +98,40 @@ predictable(myPotatoes)
 
 ```
 
+Here is a further example of how to do the same thing, for a more complex object.
+
+```typescript
+
+interface Point {
+  x: number;
+  y: number;
+  z: number;
+}
+
+interface Line {
+  start: Point;
+  end: Point;
+  color: string;
+  width: number;
+}
+
+const movePoint = (p: Point, amountX: number): Point => {
+  return {...p, x: p.x + amountX}
+}
+
+const moveLine = (line: Line, amountX: number): Line => {
+  const newstart = movePoint(line.start, amountX)
+  const newend = movePoint(line.end, amountX)
+  return {...line, start: newstart, end: newend}
+}
+
+const p1 = {x: 0, y: 0, z: 0}
+const p2 = {x: 1, y: 1, z: 1}
+
+const line = {start: p1, end: p2, color: "blue", width: 3}
+console.log(moveLine(line, 10))
+```
+
 # Higher-order functions 
 
 Functions in Typescript and Javascript can be passed as arguments to other functions. This can be used to perform many data transformations in the functional paradigm. These can replace many usages of `for` or `while` loops in other alternatives. A higher order function is a function that takes another function as an argument.
@@ -128,13 +164,14 @@ interface Point {
 const doublex = (points: Point[]): Point[] => {
     let results = []
     for (let i = 0; i < points.length; i++) {
-        const doublex = {...points[i], x: points[i] * 2}
+        const originalPoint = points[i]
+        const doublex = {...originalPoint, x: originalPoint.x * 2}
         results.push(doublex)
     }
     return results
 }
 
-doublex([{x:1 y:2}, {x: 3, y: 4}]) // [{x: 4, y: 2}, {x: 6, y: 4}]
+doublex([{x:1 y:2}, {x: 3, y: 4}]) // [{x: 2, y: 2}, {x: 6, y: 4}]
 ```
 
 Finally, suppose we need to take a list of numbers, and return a list of points, with 0 as the x coordinate, and one of the numbers as the y coordinate:
@@ -150,7 +187,7 @@ const num2point = (nums: number[]): Point[] => {
     return results
 }
 
-num2point([1,2,3,4]) // [{x: 0, y: 1}, {x: 0, y: 2}, {x: 0, y: 3}, {x: 0, y: 4}]
+num2point([1,2,3,4]) // [2, 4, 6, 8]
 ```
 
 Aren't these functions very similar? The only part that changes is the part that computes what to put in the result array.  Could we try to pass this as a parameter? Let's first do a version without worrying too much about types.
@@ -211,6 +248,45 @@ map([1, 2, 3, 4], num2point)
 
 //even shorter
 map([1, 2, 3, 4], n => ({x: 0, y: n}))
+```
+
+While our version of `map` works, we can improve it further. The last thing we can do here is that I'm not too happy with using mutation and push to construct the array. We can define alternative versions of it, using recursion.
+
+```typescript
+type transformFunc<A, B> = (arg: A)=>B
+
+const recursiveMap = <A, B> (list: A[], transform: transformFunc<A, B>): B[] => {
+    if (list.length === 0) {
+        //base case: the list is empty
+        //an empty list of type A can be "transformed" simply by returning another empty list!
+       return []
+    } else {
+        // recursive case
+        // we use the destructuring assignment and the spread operator to split the list in a head and a tail
+        const [head, ...tail] = list
+        // we transform the head
+        const processed = transform(head)
+        // we recursively call map on the tail
+        const processedTail = map(tail, transform)
+        // we rebuild the full list
+        return [head, ...processedTail]
+    }
+}
+
+// this variant use the destructuring assignment directly in the parameter list, which makes it shorter
+// note that it behaves a bit differently (it does one more recursive call)
+// but the result is the same
+const shorterMap = <A, B> ([head, ...tail]: A[], transform: transformFunc<A, B>): B[] => {
+    if (tail.length === 0) return []
+    else return [transform(head), ...map(tail, transform)]
+}
+
+// here we use the "ternary if" operator to make the definition even shorter
+// the syntax is:
+// condition?trueBranch:falseBranch
+const evenShorterMap = <A, B> ([head, ...tail]: A[], transform: transformFunc<A, B>): B[] => 
+    tail.length===0?[]:[transform(head), ...map(tail, transform)]
+
 ```
 
 ## Higher-order functions on lists
