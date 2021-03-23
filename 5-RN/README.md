@@ -136,6 +136,8 @@ const ManyProps = ({first, second, third}:{first: number, second: boolean, third
     // ...
 ```
 
+There is more on Components and Props for React [here](https://reactjs.org/docs/components-and-props.html). Note that this references Class Components, that we will not see as we don't need them anymore. It's still useful for you to know that they exist, if you come accross them.
+
 # React Native
 
 ## React vs React Native
