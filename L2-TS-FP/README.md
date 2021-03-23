@@ -68,7 +68,7 @@ const myshapes = [c, sq, line, rect, ell]
 
 ```
 
-Head over to the [TypeScript playground](https://www.typescriptlang.org/play), and paste the code above there. Then, do the following exercises, using functional programming principles and the higher-order functions defined in the Jacascript library:
+Head over to the [TypeScript playground](https://www.typescriptlang.org/play), and paste the code above there. Then, do the following exercises, using functional programming principles and the higher-order functions defined in the Javascript library (see the [lecture 4](https://github.com/rrobbes/EngineeringOfMobileSystemsV2/blob/main/4-FP/README.md) for links to the documentation):
 
 - define a function that computes the area of a shape (the area of a line being 0)
 - compute the area of all the functions in the list `myshapes`
