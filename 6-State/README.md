@@ -31,7 +31,7 @@ React Native contains a variety of UI components that can be used to allow for u
 
 Each callback is a function, passed as an argument. Each component expects a particular kind of function to work properly. For instance:
 - A button expects a function that does not necessarily needs an argument, as for the most common use case we just need to know the button was pressed.
-- A switch expects a function that needs an argument, which would be the (boolean) value the switch took (enabled or disabled). The callback is passed to the `onValuechange` event handler prop.
+- A switch expects a function that needs an argument, which would be the (boolean) value the switch took (enabled or disabled). The callback is passed to the `onValueChange` event handler prop.
 - A text input also expects a function that needs an argument, which would be the value of the text in the textinput component. The callback is passed to the `onChangeText` event handler prop.
 
 Note that, depending on the event handler, these function may actually be able to receive more arguments for more advanced use cases. For instance, the `onPress` prop for the Button may take an additional argument, to access the event's data (such as screen coordinates of the location of the press). In addition, these components support a variety of additional events. For instance, the TextInput has event handlers for when it is focused, or for when text is selected inside it. Do consult the documentation for this!
