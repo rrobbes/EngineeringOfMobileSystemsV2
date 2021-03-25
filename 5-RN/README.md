@@ -1,5 +1,7 @@
 # React and React Native
 
+The examples in the recorded lecture are [here](https://snack.expo.io/@rrobbes/rn-basics).
+
 ## The React Paradigm
 
 As we mentioned in the introduction, React is:
