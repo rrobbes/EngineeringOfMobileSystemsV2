@@ -134,7 +134,7 @@ See more [here](https://reactjs.org/docs/hooks-rules.html)
 
 The first hook is `useState`, that we saw above. `useState` allows us to attach state to a function component, by declaring a state variable. The `useState` hook is invoked with one argument, which is the initial value of the state. The first call of `useState` to useState will initialize the variable. `useState` returns an array of two objects, which are:
 - The **current value of the state**. This will be a new state variable, initialized to the argument to `useState`, the first time the component is rendered. On subsequent calls, the current value will be fetched and returned.
-- A **function to change the state**. This function sets the state variable to a new value, **just as setState would do**. After changing the state, the **component will be re-rendered**, just as if setState was called. Just like setState, we can use it in callbacks, etc ...
+- A **function to change the state**. This function sets the state variable to a new value. After changing the state, the **component will be re-rendered**, and any child component that needs to be re-rendered (via changing props, for instance) will also be re-rendered.
 
  We can use the destructuring assignment to get both objects at once, and name them as we'd like. By convention, one would be called `x`, and the other `setX`:
 
@@ -152,8 +152,6 @@ The first hook is `useState`, that we saw above. `useState` allows us to attach 
 }
 ```
 
-In that example, `setCount(count + 1)` would be exactly equivalent to `setState({count: this.state.count + 1})`. The advantage is that the `setCount` knows that it will be used to change the count property, so it can be less verbose. 
-
 More than one setState can be used:
 ```javascript
 const ThreeCounters = ({i1, i2, i3}:{i1:number, i2: number, i3: number}) => {
@@ -163,7 +161,9 @@ const ThreeCounters = ({i1, i2, i3}:{i1:number, i2: number, i3: number}) => {
     // ...
 ```
 
-As long as the calling order is respected, things will work. Often, each state property would be defined as with a separate setState. You can define a `useState` that works on a full object or a list, but then you need to set the entire state. 
+As long as the calling order is respected, things will work. Often, each state property would be defined as with a separate useState. You can define a `useState` that works on a full object or a list, but then you need to set the entire state at once. Whether you want to do this or not depends on your particular use case.
+
+This example uses more complex state:
 
 ```javascript
 const ComplexState = ({users}:{users:User[]}) => {
