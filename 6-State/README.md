@@ -1,6 +1,6 @@
 # State and Callbacks
 
-While functional programming, which avoids mutable state and unpredictable functions is very useful to avoid bugs, is very useful, it can not be easily used by itself in all contexts. To make interesting applications, we need some form of input/output (such as user interaction), and a concept of state. We just need to integrate this in a disciplined way to avoid problems. The way to do this in React Native is to handle input/output through callbacks, and to handle state via re-rendering and the useState hook.
+While functional programming, which avoids mutable state and unpredictable functions is very useful to avoid bugs, it can not be easily used by itself in all contexts. To make interesting applications, we need some form of input/output (such as user interaction), and a concept of state. We just need to integrate this in a disciplined way to avoid problems. The way to do this in React Native is to handle input/output through callbacks, and to handle state via re-rendering and the useState hook.
 
 ## Back to the counter
 Let's go back to the counter example from the introduction.
