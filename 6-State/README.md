@@ -173,7 +173,7 @@ const ComplexState = ({users}:{users:User[]}) => {
     // ...
 ```
 
-On the other hand, `setCount` can also take a callback as its argument, which will be called with the current version of the state. It is also possible to pass a function for the initial state, if it is something more complex. Note that this function will only be called once, when the component is initialized.
+On the other hand, `setCount` can also take a callback as its argument, which will be called with the current version of the state. This can be more robust in some situations than relying on the value of the state during render. It is also possible to pass a function for the initial state, if it is something more complex. Note that this function will only be called once, when the component is initialized.
 
 ```javascript
 const Counter = () => {
