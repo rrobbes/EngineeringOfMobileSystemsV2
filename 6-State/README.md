@@ -2,6 +2,8 @@
 
 While functional programming, which avoids mutable state and unpredictable functions is very useful to avoid bugs, it can not be easily used by itself in all contexts. To make interesting applications, we need some form of input/output (such as user interaction), and a concept of state. We just need to integrate this in a disciplined way to avoid problems. The way to do this in React Native is to handle input/output through callbacks, and to handle state via re-rendering and the useState hook.
 
+[Play with the examples here](https://snack.expo.io/@rrobbes/state-and-callbacks)
+
 ## Back to the counter
 Let's go back to the counter example from the introduction.
 
@@ -231,4 +233,60 @@ const UserList = ({users}:{users: User[]}) => {
 // other components left as an exercise to the reader
 ```
 
+## Source of truth
 
+One thing to note, which is visible while working with elements such as switches or textinputs, is that the **source of truth for a component is the state, not the UI**. In practice, this means that if you have, for instance, a component with a text input, you need to accept a text edit for the UI to show it. To accept the edit, you set the state of your text to be the edited text. When the component is re-rendered, it will use the accepted text as its new value, showing the edit. If you don't set your state, the edit is rejected, and the text is unchanged.
+
+You can use this to impose constraints on the text that is entered, such as providing a maximum length, allowing only numbers, etc. However be careful to make this behaviour understandable to the user (such as showing an error message to help them).
+
+```typescript
+const TextComponent = () => {
+    const [text, setText] = useState<string>("I can change")
+    const [second, setSecond] = useState<string>("I never change")
+    const [small, setSmall] = useState<string>("max 15 chars")
+
+    const checkSmall = (text: string) => {
+        if (text.length < 15) {
+            setSmall(text)
+        }
+    }
+
+    return (
+        <View>
+            <TextInput value={text} 
+               onChangeText={t => setText(t)}
+               style={{backgroundColor: "blue"}}/>
+            <TextInput value={second} 
+               onChangeText={t => t}
+               style={{backgroundColor: "red"}}/>
+            <TextInput value={small} 
+               onChangeText={checkSmall}
+               style={{backgroundColor: "green"}}/>
+        </View>
+    )
+}
+```
+
+## Idiom to select an item in a list
+
+Finally, you can use this idiom that uses conditional rendering to implement a common navigation pattern: selecting an element in a list. Each element in a list has a callback when they are pressed. When the element is selected, a "selected" state is set. Conditional rendering either renders the list, or the selected element. You can have many variations of this, such as showing both the list and the selected element, allowing to deselect the selected element, varying the type of elements, etc. 
+
+```typescript
+ const SelectList = ({list}:{list: string[]}) => {
+    const [selected, setSelected] = useState<string|null>(null)
+
+    return (
+    <View>
+     {selected?
+        <Text>you selected: {selected}</Text>:
+        list.map((e:string) => 
+          (<Pressable onPress={() => setSelected(e)}>
+                <Text>select: {selected}</Text>
+            </Pressable>))
+        }
+      </View>
+    )
+}
+```
+
+Note that for every element of the list, a **distinct callback** is generated. Each of this callback is unique to a given element.
