@@ -166,7 +166,7 @@ const ThreeCounters = ({i1, i2, i3}:{i1:number, i2: number, i3: number}) => {
 As long as the calling order is respected, things will work. Often, each state property would be defined as with a separate setState. You can define a `useState` that works on a full object or a list, but then you need to set the entire state. 
 
 ```javascript
-const ComplexState = ({users}{users:User[]}) => {
+const ComplexState = ({users}:{users:User[]}) => {
     const [current, setCurrent] = useState<User>(users[0])
     const [allUsers, setAllUsers] = useState<User[]>(users)
     const [countries, setCountries] = useState<string[]>([])
