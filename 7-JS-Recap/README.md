@@ -257,6 +257,45 @@ In practice, if you use `.tsx`, it supports everything that you will need.
 
 ### Can you give more examples of higher-order functions? 
 
+In the lab, we have one in the solution, which is an example for the `filter`, higher-order function:
+
+```typescript
+
+// we define a type for a function that is a predicate:
+// it takes an object of a given type A, and returns a boolean
+// this is a function that returns true if an object satisfies a given condition
+type predicate<A> = (arg: A)=>boolean
+
+// we define a function called filter, that takes a list of elements of type A
+// and returns the list of elements that satisfies the condition
+const filter =  <A,> (list: A[], pred: predicate<A>): A[] => {
+    // we create a list of results, initially empty
+    let results = []
+    // for each element in the list
+    for (let i = 0; i < list.length; i++) {
+        const elem = list[i]
+        const satisfies: boolean = pred(elem)
+        // if it satisfies the condition, we add it to the list
+        if (satisfies) { 
+               results.push(elem)
+        }
+    }
+    // we return the list
+    return results
+}
+
+// another version with recursion and destructuring assignment
+const shorterFilter =  <A,> ([head, ...tail]: A[], pred: predicate<A>): A[] => {
+    if (head === undefined) return []
+    if (pred(head)) return [head, ...filter(tail, pred)]
+    else return filter(tail, pred)
+}
+
+// example usages
+console.log(shorterFilter([1,2,3,4,5,6,7,8,9,10], x => x%2===0))
+console.log(shorterFilter([1,2,3,4,5,6,7,8,9,10], x => x%2!==0))
+
+```
 
 
 
