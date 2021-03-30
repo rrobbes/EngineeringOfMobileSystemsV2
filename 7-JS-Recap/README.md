@@ -29,6 +29,12 @@ myPoint = {x: 4, y: 4} // you can't do that, const forbids it
 myPoint.x = 4 // you can do this, but you SHOULD NOT
 ```
 
+### Why JS does not accept count=count+1, and java does accept this?
+
+Actually, you can do this, if you use the `let` keyword to declare a variable. It's only when you use `const`, that you can not change the value of a variable. Actually, in Java, you can have a similar behaviour, if you use the `final` keyword. 
+
+The difference is in how you use the language, rather than the language itself. If you avoid changing data, or you change it in controlled ways, it makes it easier to avoid some kind of bugs, and to think about what the programs is doing (once you're used to it).
+
 ### How does destructuring assignment work on parameters
 
 ## TypeScript questions
