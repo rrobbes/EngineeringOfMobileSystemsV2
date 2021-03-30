@@ -95,6 +95,49 @@ If you want, you can use more advanced features, such as defining functions with
 
 ### What is the difference between interfaces and types?
 
+In TypeScript, you can define more advanced types, in two ways, with `type`, or with `interface`. `type` is used to define a more complex type in general, while `interface` is more specialised for data structures. For the basic use case they are similar, but they differ for some use cases. For instance:
+
+```typescript
+//with type: 
+type Point = {
+    x: number,
+    y: number
+}
+
+// with types, you can define type annotations for other kinds of data
+// such as using lists as "tuple"
+type ThreeNums = [number, number, number]
+
+const myNums: ThreeNums = [1, 2, 3]
+
+// we can also define types for functions outside of their definition
+// which is useful if we have many functions which have the same arguments and return type
+// for instance, we can define a function that takes a point, and returns a point
+type PointFunc = (p: Point) => Point
+
+const translateX:PointFunc = (p) => {
+    return {x: p.x + 1, y: p.y}
+}
+```
+
+```typescript
+//with interface
+
+interface Point {
+    x: number;
+    y: number;
+}
+
+// with interfaces, you can extend an existing interface
+// Point3D is a point with an additional property
+interface Point3D extends Point {
+    z: number;
+}
+
+// with interfaces, you can model things that are similar to "class hierarchies".
+```
+
+
 ### What file extension do I need to use when using Javascript or TypeScript?
 We have four kinds of extensions:
 - `.js`: Javascript
