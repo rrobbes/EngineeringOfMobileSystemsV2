@@ -35,7 +35,106 @@ Actually, you can do this, if you use the `let` keyword to declare a variable. I
 
 The difference is in how you use the language, rather than the language itself. If you avoid changing data, or you change it in controlled ways, it makes it easier to avoid some kind of bugs, and to think about what the programs is doing (once you're used to it).
 
-### How does destructuring assignment work on parameters
+### How does destructuring assignment work, in general, and on parameters?
+
+The goal of the destructuring assignment is to make it easier to work with lists and objects, and to access the data that is inside them. Essentially, you write a "pattern" of the data inside the list or object you are interested in, and JS/TS will give you the pieces of data you asked for, possibly filling more than one variable in a single line. This is strictly for convenience, you don't need to use if yourself if you don't want to, but you should be able to read it.
+
+```typescript
+
+interface Point {
+    x: number;
+    y: number;
+}
+interface Point3D extends Point {
+    z: number;
+}
+
+// using destructing assignment to access properties of a Point3D
+const xplusz = (p3: Point3): number => {
+    const {x, z} = p3
+    return x + z
+}
+// equivalent to:
+const xplusz = (p3: Point3): number => {
+    return p3.x + p3.z
+}
+// equivalent to:
+const xplusz = ({x, z}:Point3): number => {
+    return x + z
+}
+
+// this does not work, we have two variables with the same name
+const notworking = ({x, z}:Point3, {x,z}:Point3): number => {
+    return x + z
+}
+```
+
+Example with lists:
+```typescript
+// we have a list of points
+const myPoints:Point[] = // ... 
+
+// with lists, we can access elements in order, plus we can access whichever elements are left
+// p1, p2, p3 are of type Point
+// rest is of type Point[] 
+const [p1, p2, p3, ...rest] = myPoints
+
+// similarly to objects, you can only access the elements you care about
+const [p1, p2] = myPoints
+// equivalent to:
+const p1 = myPoints[0]
+const p2 = myPoints[1]
+
+// we can use this to iterate on lists via recursion
+const [first, ...rest] = list
+
+// some special cases
+const [first, ...rest] = [1,2,3]
+// first = 1, rest = [2, 3]
+
+const [first, ...rest] = [2,3]
+// first = 2, rest = [3]
+
+const [first, ...rest] = [3]
+// first = 3, rest = []
+
+const [first, ...rest] = []
+// first = undefined, rest = []
+
+// we can use this in the parameters of a function too
+
+// this is a function that sums all the elements in a list
+const sumlist = (nums: number[]): number => {
+    if (nums.length > 0) {
+        const [first, ...rest] = nums
+        return first + sumlist(rest)
+    } else {
+       return 0
+    }
+}
+
+// this is equivalent to
+const sumlist = (nums: number[]): number => {
+    const [first, ...rest] = nums
+    // the list is empty
+    // typescript is unable to extract the first element,
+    // so it fills if with "undefined", and rest would be an empty list
+    if (first === undefined) {
+        return 0
+    } else {
+        return first + sumlist(rest)  
+    }
+}
+
+// this is equivalent to
+const sumlist = ([first, ...rest]: number[]): number => {
+    if (first === undefined) {
+        return 0
+    } else {
+        return first + sumlist(rest)  
+    }
+}
+```
 
 ## TypeScript questions
 
