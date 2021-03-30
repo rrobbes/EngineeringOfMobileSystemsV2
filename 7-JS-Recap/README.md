@@ -43,6 +43,36 @@ Essentially, you can use as little TypeScript as you want. But the more you use 
 
 ### What is the syntax difference between TS and JS?
 
+This is JavaScript
+```javascript
+const x = 8
+const y = 9
+
+const point = {x: 4, y: 4}
+const point2 = {x, 5, y, 5}
+
+const distance = (p1, p2) => {
+    const dx = p2.x - p1.x
+    const dy = p2.y - p1.y
+    return Math.sqrt(dx ** 2 + dy ** 2)
+}
+```
+
+This is how we would insert type annotations to make TypeScript typecheck this code
+```typescript
+const x = 8
+const y = 9
+
+const point = {x: 4, y: 4}
+const point2 = {x, 5, y, 5}
+
+const distance = (p1, p2) => {
+    const dx = p2.x - p1.x
+    const dy = p2.y - p1.y
+    return Math.sqrt(dx ** 2 + dy ** 2)
+}
+```
+
 ### How much TS do I really need to know?
 
 ## Functional Programming questions
