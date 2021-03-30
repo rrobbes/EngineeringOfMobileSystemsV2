@@ -87,6 +87,24 @@ const distance = (p1: Point, p2: Point): number => {
 
 ### How much TS do I really need to know?
 
+You don't need to know "that much": 
+- You need to use type annotations for arguments and return types of functions. 
+- You need to know how to define the types of your objects (otherwise it's easy to send an object that is not compatible)
+
+If you want, you can use more advanced features, such as defining functions with generics, but you don't really need to do this. You would need to do so when you are defining higher-order functions (such as your version of map). In practice, you won't do much of this, rather use existing higher-order functions.
+
+### What is the difference between interfaces and types?
+
+### What file extension do I need to use when using Javascript or TypeScript?
+We have four kinds of extensions:
+- `.js`: Javascript
+- `.jsx`: Supports Javascript and also JSX (where you can have React components), although Expo can also use JSX syntax in `.js` files.
+- `.ts`: TypeScript (by definition, also JavaScript, since Javascript is valid TypeScript)
+- `.tsx`: TypeScript with support for JSX too (where you can have React components, but also type check them with TypeScript)
+
+In practice, if you use `.tsx`, it supports everything that you will need.
+
+
 ## Functional Programming questions
 
 ### Can you give more examples of higher-order functions? 
