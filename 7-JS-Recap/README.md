@@ -35,6 +35,14 @@ myPoint.x = 4 // you can do this, but you SHOULD NOT
 
 ### What is the actual difference between TS and JS?
 
+TypeScript is a superset of Javascript. This means that any Javascript is also valid TypeScript. This is by design to allow developers to transition from JS to TS. 
+
+However, TypeScript is larger than Javascript: it also supports **type annotations**. You can use type annotations to tell TypeScript the types of variables, parameters, return types, object properties, of your JavaScript code. In addition, TypeScript performs type inference: it can deduce some types from the existing information in the code, such as literals (`const x = 4`), and the existing type annotations. Using type inference, TypeScript helps you avoiding bugs, and the more type annotations you use, the more it helps you.
+
+Essentially, you can use as little TypeScript as you want. But the more you use it, the better it gets.
+
+### What is the syntax difference between TS and JS?
+
 ### How much TS do I really need to know?
 
 ## Functional Programming questions
