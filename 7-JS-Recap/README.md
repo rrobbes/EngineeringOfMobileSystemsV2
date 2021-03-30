@@ -49,7 +49,7 @@ const x = 8
 const y = 9
 
 const point = {x: 4, y: 4}
-const point2 = {x, 5, y, 5}
+const point2 = {x: 5, y: 5}
 
 const distance = (p1, p2) => {
     const dx = p2.x - p1.x
@@ -59,16 +59,28 @@ const distance = (p1, p2) => {
 ```
 
 This is how we would insert type annotations to make TypeScript typecheck this code
+
 ```typescript
-const x = 8
-const y = 9
+// you insert type annotations after the names of the variables
+// typescript would be able to infer these annotations by itself
+// but it's perfectly fine to add them too
+const x: number = 8
+const y: number = 9
 
-const point = {x: 4, y: 4}
-const point2 = {x, 5, y, 5}
+// we can also provide type annotations for objects and their properties
+// here, we say we have an object with two properties, x and y, both numbers
+const point:{x:number, y:number} = {x: 4, y: 4}
 
-const distance = (p1, p2) => {
-    const dx = p2.x - p1.x
-    const dy = p2.y - p1.y
+// usually, we define interfaces or types for our objects
+// this allows to name a type, and reuse it elsewhere
+type Point = {x:number, y:number}
+const point2: Point = {x: 5, y: 5}
+
+// we can also provide type annotations for functions
+// for arguments, return type, and variables
+const distance = (p1: Point, p2: Point): number => {
+    const dx: number = p2.x - p1.x
+    const dy: number = p2.y - p1.y
     return Math.sqrt(dx ** 2 + dy ** 2)
 }
 ```
