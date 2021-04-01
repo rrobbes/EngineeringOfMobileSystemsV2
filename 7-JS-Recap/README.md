@@ -138,6 +138,32 @@ const sumlist = ([first, ...rest]: number[]): number => {
 
 ### Can you recap the syntax of arrow functions?
 
+To write arrow functions, there are a few ways to do so, depending on some circumstances.
+
+First, the number of arguments and the usage of parentheses.
+```typescript
+// you can always put parentheses to denote what the arguments are:
+
+const noArgumentCallBack = () => // function body
+const oneArgFunction = (x) => // function body
+const moreArguments = (x, y, z) => // function body
+
+// For the special, but common case where you have a single argument
+// you can omit parentheses:
+
+const slightlyShorter = x => // function body 
+
+// Finally, if you use TypeScript type annotations
+// then you need parentheses in all cases:
+
+const mustHaveParens = (x: number) => // function body
+
+const tsTwoArgs = (x: number, y:string):boolean => //function body
+```
+
+Essentially, if you don't want to think about it, just use parentheses all the time. 
+
+
 ### How can I use the spread operator to build new objects and lists?
 
 ## TypeScript questions
