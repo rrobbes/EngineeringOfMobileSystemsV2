@@ -214,7 +214,117 @@ const buildPoint = (x: number, y: number):Point => ({x: x, y: y})
 
 ```
 
+### Using console.log in functions
+Normally, this should work:
+
+```typescript
+
+const myFunc = (x) => {
+    console.log("myFunc")
+    console.log(x)
+    return x *** x
+}
+```
+
+A couple of reasons why it could look like it doesn't work would be:
+- The function is not actually called, so console.log does not execute
+- The function is called, but the value given to console.log is `undefined`, so an empty line is printed
+
 ### How can I use the spread operator to build new objects and lists?
+
+When you use functional programming principles, you don't want to directly modify objects, you want to return "new versions" of an object.
+
+This is straightforward for simple objects:
+```typescript
+interface Point {
+    x: number;
+    y: number;
+}
+
+const translateX = (p: Point, xAmount: number): Point => {
+    const newPoint = {x: p.x + xAmount, y: p.y}
+    return newPoint
+    
+const translateY = (p: Point, yAmount: number): Point => ({x: p.x, y: p.y + yAmount})
+```
+
+For more complex objects, it would not work very well:
+```typescript
+interface Point6D extends Point {
+    z: number;
+    t: number;
+    u: number;
+    v: number;
+}
+
+const translateXdoestNotScale = (p: Point6D, xAmount: number): Point6D => {
+    const newPoint = {x: p.x + xAmount, y: p.y, z: p.z, t: p.t, u: p.u, v: p.v}
+    return newPoint
+}
+
+// using the spread operator, we grab all the properties of an existing object
+// and we redefine only the ones that should change
+const thisScalesBetter = (p: Point6D, xAmount: number): Point6D => {
+    const newPoint = {...p, x: p.x + xAmount }
+    return newPoint
+}
+```
+
+We can use the same thing for objects that are composed of other objects:
+```typescript
+
+type Callback = ()=>void;
+
+interface Shape {
+    pointA: Point;
+    pointB: Point;
+    color: string;
+    onClick: Callback;
+}
+
+const translateShapeX = (shape: Shape, xAmount: number): Shape => {
+    const newPointA = translateX(shape.pointA, xAmount)
+    const newPointB = translateX(shape.pointB, xAmount)
+    return {...shape, pointA: newPointA, pointB: newPointB}
+}
+
+// we can use a little trick to make this easier to read
+// if a variable is named just like a property, 
+// we can directly put it in the object,
+// without specifying the property name
+// if we want the same
+const translateShapeX = (shape: Shape, xAmount: number): Shape => {
+    const pointA = translateX(shape.pointA, xAmount)
+    const pointB = translateX(shape.pointB, xAmount)
+    return {...shape, pointA, pointB}
+}
+
+interface Shape2 {
+    points: Point[];
+    color: string;
+    onClick: Callback;
+}
+
+// if we have properties that are lists, then we just use 
+// higher-order functions to change the data
+const translateShape2X = (shape: Shape2, xAmount: number): Shape => {
+    const points = points.map((pt: Point) => translateX(pt, xAmount))
+    return {...shape, points}
+}
+
+interface Drawing {
+    shapes: Shape[];
+    name: string;
+    author: string;
+}
+
+const translateDrawing = (d: Drawing, xAmount: number): Drawing => {
+    const shapes = d.shapes.map((sh: Shape2) => translateShape2X(sh, xAmount))
+    return {...d, shapes}
+}
+```
+
+
 
 ## TypeScript questions
 
