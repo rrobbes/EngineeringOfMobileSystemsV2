@@ -81,5 +81,37 @@ const ComponentWithProps = ({title, size}:TitleSizeProps) => {
 
 ## What does conditional rendering mean?
 
+Conditional rendering is a strategy to render applications with some degree of complexity (later we will see other ways that work for even larger applications). 
+
+- Every component is rendered, which eventually produces a tree of UI elements
+- Conditional rendering simply refers to rendering a different thing when a different condition applies
+
+```typescript
+
+type Item = // ...
+
+const ConditionalComponent = ({item, details}:{item: Item, details: boolean}) => {
+
+    if (details) {
+        return (
+            <View>
+               <Text>Name: {item.name}</Text>
+               <Text>Price: {item.price}</Text>
+               <Text>Colour: {item.colour}</Text>
+               <Text>Warranty: {item.warranty}</Text>
+              </View>
+              )
+      } else {
+        return ( 
+             <View>
+               <Text>Name: {item.name}</Text>
+               <Text>Price: {item.price}</Text>
+             </View>
+             )
+     }
+}
+
+```
+
 ## How do I use 'useState' and hooks in general for managing states? 
 
