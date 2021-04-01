@@ -136,6 +136,10 @@ const sumlist = ([first, ...rest]: number[]): number => {
 }
 ```
 
+### Can you recap the syntax of arrow functions?
+
+### How can I use the spread operator to build new objects and lists?
+
 ## TypeScript questions
 
 ### What is the actual difference between TS and JS?
