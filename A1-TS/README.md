@@ -19,3 +19,18 @@ The goal of this assignment is to practice the principles of functional programm
 All functions must be properly typed with TypeScript annotations, at least for their arguments and return types.
 
 
+**Note**: This assignment is about TypeScript only, not React. You do not need to render components. It is enough to define functions, and call them, like so:
+
+```typescript
+
+const weakPassword = (password: string): boolean => {
+    // you should fill this
+}
+
+// to test it, just call it
+
+weakPassword("weak") // should return true
+weakPassword("superStrong2#454rrffdg43") // should return false
+
+```
+
