@@ -111,7 +111,35 @@ const ConditionalComponent = ({item, details}:{item: Item, details: boolean}) =>
      }
 }
 
+// slightly shorter
+const ConditionalComponent = ({item, details}:{item: Item, details: boolean}) => {
+      return (
+           <View>
+               <Text>Name: {item.name}</Text>
+               <Text>Price: {item.price}</Text>
+               {details?(<View>
+                             <Text>Colour: {item.colour}</Text>
+                             <Text>Warranty: {item.warranty}</Text>
+                          </View>)
+                        :null}
+              </View>
+          )
+}
+
+// we can also use more components, if necessary
+const ConditionalComponent = ({item, details}:{item: Item, details: boolean}) => {
+      return (
+           <View>
+              <BasicItem item={item}>
+              {details?<ItemDetails item={item}/>:null}
+           </View>
+          )
+}
+
 ```
+
+We can also do conditional rendering with more complex conditions, such as using a switch statement, for instance, or numeric conditions, etc.
+
 
 ## How do I use 'useState' and hooks in general for managing states? 
 
