@@ -160,3 +160,4 @@ const ConditionalComponent = ({item, initialDetails}:{item: Item, initialDetails
 
 ```
 
+## Why does React ask that my components have a key, and how can I give one to them?
