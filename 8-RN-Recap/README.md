@@ -187,4 +187,5 @@ To avoid this, React uses a special "key" prop, that it uses to detect differenc
 
 Since React needs the help of the key to figure out differences in the tree, it gives a warning when the keys are absent in places where it would need them, such as when rendering lists of elements.
 
+Recommendation: to avoid issues of performance (and occasional visual bugs) while rendering lists of components, always include a "key" prop when you are rendering lists in this way.
 
