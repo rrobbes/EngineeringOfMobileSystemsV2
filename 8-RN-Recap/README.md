@@ -143,3 +143,20 @@ We can also do conditional rendering with more complex conditions, such as using
 
 ## How do I use 'useState' and hooks in general for managing states? 
 
+You should use `useState` to define state that is relevant for a specific component. An important part of designing a React application is determining which component should have which part of the state. In general, the state should be as close as possible to the component that will end up needing it.
+
+```typescript
+// this component uses state to togle the amount of details needed
+const ConditionalComponent = ({item, initialDetails}:{item: Item, initialDetails: boolean}) => {
+      const [details, setDetails] = useState<boolean>(initialDetails)
+      return (
+           <View>
+              <BasicItem item={item}>
+              {details?<ItemDetails item={item}/>:null}
+              <Switch value={details} onValueChange={newValue => setDetails(newValue)} />
+           </View>
+          )
+}
+
+```
+
