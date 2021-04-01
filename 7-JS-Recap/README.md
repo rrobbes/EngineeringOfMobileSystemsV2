@@ -140,7 +140,7 @@ const sumlist = ([first, ...rest]: number[]): number => {
 
 To write arrow functions, there are a few ways to do so, depending on some circumstances.
 
-First, the number of arguments and the usage of parentheses.
+**First, the number of arguments and the usage of parentheses.**
 ```typescript
 // you can always put parentheses to denote what the arguments are:
 
@@ -163,6 +163,56 @@ const tsTwoArgs = (x: number, y:string):boolean => //function body
 
 Essentially, if you don't want to think about it, just use parentheses all the time. 
 
+**When to use brackets and the return statement in the body**
+One of the use cases of arrow functions, is to write **very short functions, which are anonymous**. For instance:
+
+```typescript
+// to write a function inline like this, we would like it to be as short as possible
+[1,2,3,4,5,6].map(x => x ** x)
+
+//however, we can also write it like this:
+[1,2,3,4,5,6].map((x) => {
+       return x ** x
+     })
+
+// you can always use curly brackets and a return statement
+// if you do, you can have a function body that contains multiple statements
+const multipleStatements = (x, y) => {
+    const z = x + y
+    const t = z ** 4
+    return t + z
+}
+
+// in the case where the function body is a single statement
+// AND you are returning something
+// THEN you can omit the brackets and the return keyword
+// JS will automatically return the value you compute
+
+const longer = (x) => {
+    return x ** x
+}
+
+const shorter = (x) => x ** x
+```
+
+**One special case, when returning an object**
+
+```typescript
+// there can be an ambiguity:
+const buildPointButNotWorking = (x: number, y: number):Point => {x: x, y: y}
+// it's hard for JS/TS to know if the brackets are for the function body, or the object declaration
+
+// here there are no ambiguities
+const buildPoint = (x: number, y: number):Point => {
+    return {x: x, y: y}
+}
+
+// here, no ambiguities either
+// the parentheses help JS determine that we are already inside a function body
+// so the brackets are to declare an object
+const buildPoint = (x: number, y: number):Point => ({x: x, y: y})
+
+```
 
 ### How can I use the spread operator to build new objects and lists?
 
