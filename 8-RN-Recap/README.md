@@ -161,3 +161,30 @@ const ConditionalComponent = ({item, initialDetails}:{item: Item, initialDetails
 ```
 
 ## Why does React ask that my components have a key, and how can I give one to them?
+
+If you go [this app](https://snack.expo.io/@rrobbes/todo-app), and you delete line 66 (` key={todo.id}`), you will notice that the application works, but behaves strangely: when adding some todos, if some of the todos are marked as done (by pressing the switch), the switches appear to "move". It's most obvious when todos are alternating, one done, one not.
+
+Conceptually, React could re-render all the components anytime a piece of data (either in state or in a prop) changes. However, this would be too slow. React then does some optimization, to avoid re-rendering everything. What it does is to only re-render the components that have some changes in them (either in props or in state). To figure out what has changed React uses a Tree differencing algorithm. This algorithm takes two trees A and B, traverses them, and produces a list of the changes that you can apply to tree A, in order to obtain tree B. These changes would be for instance:
+
+- Add a node below node X in tree A
+- Remove node Y in tree A
+- ...
+
+In the todo app, for instance, if you mark a todo as done, then the change would be "enable the switch below todo number X in this list". If you add a todo, the change should be "add a todo between todos Y and Z in the list" (or "add a todo at begining of the list or "add a todo at the end of the list").
+
+When we have a list of components that are all of the same type, it is hard to detect which ones change when components are added or removed in the list. If you add an element at the begining of the list, React "should" deduce that the elements must be shifted one place to the right, but it wont. It will instead add an element to the end of the list, and change all the previous elements. Here is an example with removing.
+
+- Old list: [A, B, C, D, E]
+- New List: [B, C, D, E]
+- Ideal change: Remove "A"
+- Detected changes: Rename "A" to "B", rename "B" to "C", rename "C" to "D", rename "D" to "E", remove "E"
+
+To avoid this, React uses a special "key" prop, that it uses to detect differences. The "key" must be a string, and must be unique for each element below a given node in the tree.
+
+- Old list: [A (key="a"), B (key="b"), C (key="c"), D (key="d"), E (key="a")]
+- New List: [B (key="b"), C (key="c"), D (key="d"), E (key="e")]
+- Detected change: Remove "A"
+
+Since React needs the help of the key to figure out differences in the tree, it gives a warning when the keys are absent in places where it would need them, such as when rendering lists of elements.
+
+
