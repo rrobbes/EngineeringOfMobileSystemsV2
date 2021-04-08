@@ -45,3 +45,6 @@ After this you can go further, in the following ways:
 - improve the style the application, for instance by adding spacing between elements, using TouchableOpacity instead of buttons, adding a white  background to flashcards front and back
 - simplify the code by using a single callback, with an argument, to record guesses, instead of using two callbacks
 
+## Partial solution
+
+A version of the flashcard application with the deck editor can be found [here](https://snack.expo.io/@rrobbes/flash-card-with-editor)
