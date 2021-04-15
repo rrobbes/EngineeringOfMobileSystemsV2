@@ -122,10 +122,11 @@ As with a FlatList, each `data` is still a list. It just works like the FlatList
 
 
 ## Further reading links: 
-https://reactnative.dev/docs/flexbox
-https://snack.expo.io/@rrobbes/contact-filtering-example
-https://reactnative.dev/docs/scrollview
-https://reactnative.dev/docs/flatlist
-https://reactnative.dev/docs/sectionlist
-https://reactnative.dev/docs/virtualizedlist
+
+- https://reactnative.dev/docs/flexbox
+- https://snack.expo.io/@rrobbes/contact-filtering-example
+- https://reactnative.dev/docs/scrollview
+- https://reactnative.dev/docs/flatlist
+- https://reactnative.dev/docs/sectionlist
+- https://reactnative.dev/docs/virtualizedlist
 
