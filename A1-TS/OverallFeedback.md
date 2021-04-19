@@ -4,9 +4,9 @@
 
 I adopted the following grading scheme:
 
-**3:** An assignment that mostly follows the principles seen in class. This is not necessarily a “perfect” solution, see the detailed feedback for potential ways to improve it.
-**2:** An assignment that follows some of the principles seen in class, but not all. 
-**1:** An assignment that generally does not follow the principles that were seen in class. Detailed feedback is given in individual solutions.
+- **3:** An assignment that mostly follows the principles seen in class. This is not necessarily a “perfect” solution, see the detailed feedback for potential ways to improve it.
+- **2:** An assignment that follows some of the principles seen in class, but not all. 
+- **1:** An assignment that generally does not follow the principles that were seen in class. Detailed feedback is given in individual solutions.
 
 ## Common issues
 
