@@ -1,6 +1,5 @@
 # Navigation
-This lecture covers how to use navigation in a react native app. The lecture is partially based this [CS50 lecture](https://www.youtube.com/watch?v=QHorNUuEXc0).
-
+This lecture covers how to use navigation in a react native app. 
 ## What is navigation?
 
 Since a mobile app is usually rendered on a small screen, its UI can not usually show all the functionality of an app in a single place. Mobile apps tend to define an app as a set of **screens**, each screen showing a specific and cohesive subset of the app's functionality.  For instance, a contact management app could have the following screens:
@@ -187,7 +186,6 @@ This is a bit similar to **higher-order functions**, such as `map` and `filter`.
 
 Tab navigators have tabs, and like stack navigator, they don't unmount the hidden screens. 
 
-There are several implementations of the tab navigator. Also, goBack works on tab navigators, it brings you back to the first tab. But you can configure it. The default tab navigator shows a tab bar at the bottom.
+There are several implementations of the tab navigator.  The default tab navigator shows a tab bar at the bottom. Importantly, some of the navigation options differ from the stack navigator, as you can not have such an extended support of history. The simplest history option, goBack(), works on tab navigators, it brings you back to the first tab (but you can configure it).
 
-To create it, you need to define some routes, and that's pretty much it. If we compose navigators, we can have a Tab navigator that defines routes, in which other navigators can be defined, such as stack navigators.
-
+To create it, it is similar to the Stack Navigator, but you also have the option to provide icons to the tabs. If we compose navigators, we can have a Tab navigator that defines routes, in which other navigators can be defined, such as stack navigators.
