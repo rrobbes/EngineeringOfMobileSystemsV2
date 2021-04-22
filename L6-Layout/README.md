@@ -11,3 +11,5 @@ Right now, the flashcard app only has a single-colum, "narrow" layout. To improv
 To experiment with the width of the application, remember that you can "pop out" the window and resize it.
 
 In addition, you can practice improving the scrolling of the cards in the deck editor by using ScrollViews and FlatLists. If you have time, add a "review mode" to the Deck component (not the editor). When pressing a button, the Deck component shows a SectionList of the cards, organized in three sections: those that have been guessed right, guessed wrong, and those that are unseen.
+
+[A possible solution is visible here](https://snack.expo.io/@rrobbes/flashcards-conditional-layout)
