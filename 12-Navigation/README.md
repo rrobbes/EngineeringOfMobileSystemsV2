@@ -161,17 +161,35 @@ Notice how the screens have title bars now. This is because having screen titles
 
 And a full list is here: [https://reactnavigation.org/docs/screen-options/]
 
-The libary takes care of a lot of small details that users care about, such as what to do when a screen title is too long.
-
-Note that `options` does not need to be fixed. Instead of an object, a function taking as arguments a `props` object, containing a `navigation` object, a `route` object, and a default `options` object. This function can then return an object describing the navigation option values to apply to the screen. Since `navigation` is passed as a parameter, this can be used to put navigation buttons in the header bar, or to pass data though parameters.
+The libary takes care of a lot of small details that users care about, such as what to do when a screen title is too long. Shared options can be put in a screenOptions prop for the whole navigator.
 
 
-### Adding buttons to headers
 
-We can do this by setting the headerLeft and headerRight properties. We can put React Native components there, such as buttons. Since these buttons are defined in navigationOptions, they may have access to the navigation object, so their callbacks may cause navigations.
+
+### Customizing header options
+
+ The title of a screen can be customized: an arbitrary component can be put there. We even put interactive components such as buttons. We can also customize this header further by setting the headerLeft and headerRight properties, these can be functions that return components (this is a bit inconsistent with the title, for which a function is not needed). 
+ 
+ However, for interactive components to be interesting, they need to have access to information. To allow this, note that `options` does not need to be fixed. Instead of an object, a function taking as arguments a `props` object, containing a `navigation` object, a `route` object. This function can then return an object describing the navigation option values to apply to the screen. Since `navigation` is passed as a parameter, this can be used to put navigation buttons in the header bar, or to pass data though parameters.
 
 They are regular components, but rendered in the title bar, not the screen itself. The title could also be any component, such as a button.
 
+```typescript
+//customizing the header properties
+<Stack.Screen 
+          name="Home" 
+          component={Home} 
+          options={({route, navigation}) => ({
+                  title: "Home Screen", 
+                  headerLeft: () => <Text>left</Text>, 
+                  headerRight: () => <Button title="screen 3"  onPress={() => navigation.navigate("Screen 3")} />})} />
+
+//the title varies with the parameters passed to the screen
+ <Stack.Screen 
+          name="Screen 2" 
+          component={Screen2} 
+          options = {({route}) => ({title: route.params.name})} />
+```
 
 ## Higher Order Components
 
@@ -189,3 +207,109 @@ Tab navigators have tabs, and like stack navigator, they don't unmount the hidde
 There are several implementations of the tab navigator.  The default tab navigator shows a tab bar at the bottom. Importantly, some of the navigation options differ from the stack navigator, as you can not have such an extended support of history. The simplest history option, goBack(), works on tab navigators, it brings you back to the first tab (but you can configure it).
 
 To create it, it is similar to the Stack Navigator, but you also have the option to provide icons to the tabs. If we compose navigators, we can have a Tab navigator that defines routes, in which other navigators can be defined, such as stack navigators.
+
+
+## Screens versus normal components
+
+While adding navigation is very useful, to extend the application, we don't want to reduce the reusability of the components. If we have a component that directly uses navigation, this means that it can not be reused in another context, where navigation is not available, or the navigation possibilities are different. Consider the following example, where a list of items is shown in one screen, and two additional screens allow to see details of an item, and to add new items (a generic pattern, here simplified to the maximum).
+
+
+```typescript
+
+const List =  ({navigation, route}) =>  {
+    const [list, setList] = useState<int[]>([1,2,3,4,5])
+    const onAdd = (n) => setList([n, ...list])
+
+    return (
+      <View>
+      {list.map(n => <Button title={"select " + n} onPress={() => navigation.navigate("Number", {num: n})} />)}
+      <Button title="add new number" onPress={() => navigation.navigate("AddNum", {onAdd: onAdd})} />
+      </View>
+    )
+}
+
+
+const Number =  ({navigation, route}) =>  {
+    const {num} = route.params
+
+    return (
+      <View>
+      <Text>You selected {num}</Text>
+      </View>
+    )
+}
+
+const AddNumber = ({navigation, route}) => {
+    const {onAdd} = route.params
+    const choices = [6, 7, 8, 9, 10]
+    return (
+       <View>
+        {choices.map(n => <Button title={"add " + n} onPress={() => { onAdd(n); navigation.navigate("NumList")}} />)}
+        </View>
+    )
+}
+
+const StackNavigator = () => {
+  const Stack = createStackNavigator()
+  return (
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="NumList" component={List} options={{title: "Number List"}} />
+      <Stack.Screen name="Number" component={Number} options = {({route}) => ({title: "chosen: " + route.params.num})} />
+      <Stack.Screen name="AddNum" component={AddNumber} options={{title: "Add a number"}} />
+    </Stack.Navigator>
+  </NavigationContainer>
+  )
+}
+```
+
+
+
+In short, we would like our application to support navigation but have our main UI components be unaware that navigation is used. How can we do this?
+
+The answer is to use **screen components**. Screen components are used only to deal with the complexity of navigating between screens, and fetching data from other screens, or sending data to them. They isolate the presence of navigation from the other component.
+
+In React Native, components receive information from their parents throught their props. As long as their parent sends them the right information, they "don't care" what kind of component the parent is. 
+
+With screen components, each screen of the application is a tree of UI components, as before. But only the root component of the tree has knowledge of the navigation. This component can:
+- Fetch data from the navigator, through screenProps or parameters, and pass this data to its children as regular props.
+- Define the navigation operations that may be needed (navigating to other screens, going back, etc).
+- Hide these navigation operations inside callbacks. These callbacks can then be passed to the components as regular props, as we did before.
+
+The screen component should have no or very little actual functionality. Its only role is to act as a "translator" between the navigator and the normal components.
+
+## Callbacks between screens
+
+Earlier, we managed state in a parent component, wich would pass callbacks to the child components. We can use the same callback mechanism for screens. The only difference is that screens can pass callbacks via params, instead of props (for now).
+
+To do callbacks between screens, each screen will receive the original callbacks, instead of the components. Each screen will define new callbacks, that will execute the original callbacks, and also execute the necessary navigation operations. Thus, the screens wrap the navigation operations so that the original components are not affected. Operating in this way, the two Components **do not need to know that anything changed if the navigation changes**. They can be used as they were used before. Only the screens have to be changed. See the example below:
+
+
+
+## Typing the navigation
+
+It can be easy to make mistakes when navigating to a route if there is no type checking, as the route is defined as one of several strings. Likewise, screens can expect parameters, but they also need to be typed to reduce errors. There is more information to do this [here](https://reactnavigation.org/docs/typescript/). Unfortunately, Expo snack does not support this, as it is (at the moment) using an older version of TypeScript, that can not be changed. However, a local installation of Expo should work here. Typing involves listing the available routes and expected parameters (using "undefined" if no parameters are expected for a given route) in a type definition. Then type definitions for a stack or tab navigator can be imported, and parametrized (since they use generics), with the type definition of the screens. For instance
+
+```typescript
+import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
+
+// listing all the routes available and typing their parameters
+type ApplicationRoutes = {
+  Home: undefined,
+  Screen2: {name: string},
+  Screen3: undefined,
+  Settings: undefined,
+}
+
+// instantiating the concrete type for a route
+type HomeScreenProps = StackScreenProps<ApplicationRoutes, "Home">
+const Home = ({navigation}:HomeScreenProps) =>  {
+// ...
+}
+
+// instantiating concrete type for a route with paramStr
+type Screen2Props = StackScreenProps<ApplicationRoutes, "Screen2">
+const Screen2 = ({navigation, route}:Screen2Props) =>  {
+// ...
+}
+```
