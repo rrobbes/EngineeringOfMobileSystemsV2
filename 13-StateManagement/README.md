@@ -1,4 +1,4 @@
-# State management
+# State management and Custom hooks
 
 ## Managing state with useState
 We have seen the way to handle state in small-scale React and React Native apps: usually, one component is in charge of a piece of state, and it passes the relevant data to the child components that need it, through props. 
