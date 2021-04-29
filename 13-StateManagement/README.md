@@ -124,8 +124,8 @@ A special use case are props that are needed for all components, such as common 
 Before going into state management, note that these state management solutions are not meant to bypass state management with React. This still works at small scales, and passing data as props is the best way to write simple and reusable components. 
 
 As we will see, a good way to use these solutions is to use them in a similar manner than when we used navigation:  
-- Define most of the UI with "Regular React Components" (also called "Dumb"), that receive data through props.
-- Define **a few** adapter components, that will have the knowledge of the state management library (the "Smart" components). 
+- Define most of the UI with "Regular React Components", that receive data through props.
+- Define **a few** adapter components, that will have the knowledge of the state management library (or "Smart" components). 
 
 With navigation, we would define normal UI components, and wrap them with `Screen` components, that were in charge of hiding the navigation library from the other components. The `Screen` components would
 - Get the data sent to a screen via parameters, and pass it as regular props to the components.
@@ -191,7 +191,7 @@ We won't look at all 30+ libraries. We will look at a handful of the most well-k
 
 However, you are free to explore the state management libraries, and compare them on the application in question. By using a single application, it is much easier to compare the state management libraries.
 
-## Baseline: the packing list app with setState
+## Baseline: the packing list app with useState
 
 The baseline allows us to understand how the app works normally. In this case, we have three components:
 - `App`: the top component of the application, that passes props to the other components.
@@ -202,8 +202,9 @@ The baseline allows us to understand how the app works normally. In this case, w
 
 - `addItem`: a callback to add a new item to the state, with the name being set earlier by `setNewItemText`.
 - `clear`: a callback to clear the list of items.
+
  
-We don't need to know how the `ListItems` and `AddItems` components are implemented. The goal is to reuse them, without changing them. So the only thing that is needed is to pass the appropriate props to them.
+We don't need to know how the `ListItems` and `AddItems` components are implemented. The goal is to reuse them, without changing them. So the only thing that is needed is to pass the appropriate props to them (note that we are simplifying things a bit here, the actual implementation passes two more props, and has more layout components, etc. here we simplfy to make the presentation of the concepts clearer).
 
 The App component can be implemented in React Native as such:
 
@@ -215,18 +216,14 @@ export default function App() {
   const addItem = (item) => setItems([item, ...allItems])
 
   return (
-    <SafeAreaView style={styles.root}>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="always">
-        <Text style={styles.welcome}>Welcome to useState</Text>
+      <ScrollView>
+        <Text>Packing list with useState</Text>
         <AddItems
           addItem={addItem}
           clear={clear}
         />
         <ListItems allItems={allItems} />
       </ScrollView>
-    </SafeAreaView>
   );
 }
 ```
@@ -251,8 +248,6 @@ React Context uses the concepts of a Context **Provider** and a Context **Consum
 - A Context **Consumer** can ask for the context, and fetch data from it. React will look for the closest Context defined in the tree of component, and hand it in to the consumer. 
 
 The context does not need to be defined as a prop. Instead, the context provider will wrap the children components, allowing all children, even indirect one, to access the context if they ask for it. 
-
-
 
 
 The top App component would look like this
@@ -280,12 +275,11 @@ export default function App() {
         items,
       }}
     >
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.headline}>Welcome to React Native useContext!</Text>
+      <ScrollView>
+        <Text>Packing list with useContext</Text>
         <ItemsController />
         <ItemsList />
-        <StatusBar style="auto" />
-      </SafeAreaView>
+     <ScrollView>
     </AppContext.Provider>
   );
 }
@@ -297,25 +291,17 @@ Thus, the wrapping component takes the state, destructures it, and selects the p
 
 ```javascript
 import React, { useContext, useState } from "react";
-import { AddPackingItem } from "packlist-components/native";
+import { AddItems } from "packlist-components/native";
 import AppContext from "../context/AppContext";
 
 const ItemsController = () => {
   const { addItem, clearItems } = useContext(AppContext);
-
-  const [newItemName, setNewItemName] = useState("");
-
-  const handleAddItem = () => {
-    addItem(newItemName);
-    setNewItemName("");
-  };
-
+  // original implementation adds an intermediate component and two more callbacks to handle a text field
+  
   return (
-    <AddPackingItem
+    <AddItems
       addItem={handleAddItem}
       clear={clearItems}
-      setNewItemText={(input) => setNewItemName(input)}
-      value={newItemName}
     />
   );
 };
@@ -345,7 +331,6 @@ See the [full code of the Packing App with Context](https://github.com/GantMan/R
 There are still a few issues with the code above. 
 
 - The app itself defines how the context works in terms of state, which is not ideal for reusability
-- The default context misses this state, and is not fully functional
 - We haven't seen how this works with TypeScript yet.
 
 To solve the first two, we need to abstract away the state management in the context, rather than in the app component. This is actually very easy to do: we can simply extract the relevant code in a **custom hook**. 
@@ -356,9 +341,9 @@ To solve the first two, we need to abstract away the state management in the con
 While single hooks are convienent, one of the most important strengths of hooks is how much they facilitate reuse through **custom hooks**. The [full documentation on this is available here](https://reactjs.org/docs/hooks-custom.html). The gist of it is that a custom hook is a function that uses hooks (such as state hooks), but unlike a component, does not render anything. Defining a custom hook can be as simple as moving the relevant code to a new function (starting with `use` for conventions), and call it in the component. Let's define a custom hook to reuse the logic of a counter.
 
 We had an earlier counter example:
-```javascript
+```typescript
 const Counter = (props) => {
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState<number>(0)
     increment = () => setCount(count + 1)
     decrement = () => setCount(count - 1)
 
@@ -444,6 +429,7 @@ const useAppContext = (initialValues) => {
 }
 
 export default function App() {
+    // the app create a new context with initial values.
     const context = useAppContext(["Pizza", "Falafel", "Sushi"])
 
   return (
@@ -494,381 +480,71 @@ const useAppContext = (initialValues): AppContext => {
 
 }
 
-// the default app context is now fully functional, and type checked
-export const DefaultAppContext = createContext<AppContext>(useAppContext(["default", "item", "values"]));
-
-// the app can also create a new context with other values, using the hook, as before.
+// the app context can be type checked
+export const DefaultAppContext = createContext<NumberContext>({
+  addNumber: (n: number) => {},
+  numbers: []
+});
 
 ```
 
 ## Integrating contexts and navigation
 
-See the example live-coded in class
+Since the "Screen" components for navigation are at the top of the component hierarchy for each screen, and they have knowledge of the navigation, which already makes them "non-standard" components, they are a good place to also include context management. This allows to have a few components that know about both context and navigation, while other components do not know about any of these topics; they just receive props. It is then possible to add additional components that use context (**sparingly**) inside the hierarchy, if needed. Those uses should be as limited as possible. For instance, the following pair of components from [the number list application](https://snack.expo.io/@rrobbes/contextual-navigation).
 
+```typescript
+// screen component, knowing about both Navigation and Context
+const AddNumberScreen = ({navigation, route}) => {
+    // extracts callback to add numbers from the context
+    const {addNumber} = useContext(AppContext)
 
+    // wrap the context callback to additionally add navigation
+    // to return back to the main screen
+    const wrappedAdd = (n: number) => {
+        addNumber(n); 
+        navigation.navigate("NumList");
+    }
+    
+    // passing data as props to regular component
+    return <AddNumber onAdd={wrappedAdd} />
+    
+}
+
+// regular component, that is oblivious to both the navigation and the context
+const AddNumber = ({onAdd}:{onAdd: NumCallback}) => {
+
+    const choices = [6, 7, 8, 9, 10]
+
+    return (
+       <View>
+        {choices.map(n => <Button title={"add " + n} onPress={() => onAdd(n) } />)}
+        </View>
+    )
+}
+
+```
+
+### A note on multiple contexts
+
+It is perfectly possible to have multiple contexts. To do so, just add several context providers at the beginning of the application. Indeed, it is preferable to have multiple smaller contexts, used in fine-grained locations, rather than one large context shared by all components. For instance, you may have two contexts, ``ContextA`` and ``ContextB``, which some of your screens only using ``ContextA``, others only using ``ContextB``, others using possibly both (or none of them!).
+
+```typescript
+const App = () => {
+
+  const contextA = useContextA(...)
+  const contextB = useContextB(...)
+
+  return (
+      <ContextA.Provider value={contexA}>
+        <ContextB.Provider value={contexB}>
+          <StackNavigator />
+        </ContextB.Provider>
+      </ContextA.Provider>
+  )
+}
+```
 
 # Other state management options
-There are a variety of other state management options. Some others are described below:
+There are a variety of other state management options. Some others, namely Unstated, Redux and MobX, are described [in a second page](./Others.md). For the purpose of this class, they are not really necessary, but might be useful for you in the future. State management APIs such as Redux and MobX are significantly more powerful, allowing things such as logging of state changes, undoing changes to the state, or keeping some state on a centralized server, rather than just on the device.
 
-## Unstated
-
-Unstated one of the simplest state solution, which also has the big advantage of being very consistent with the way React works. See [Packing app with Unstated here](https://codesandbox.io/s/github/GantMan/ReactStateMuseum/tree/master/React/unstated)
-
-Unstated is built on top of the Context API, and it uses a provider setup like the Context API. The Provider wraps around React components. 
-
-```javascript
-import React from "react";
-import { Provider } from "unstated";
-import ListItems from "./Components/listItems";
-import AddItems from "./Components/addItem";
-
-const App = props => (
-      <Provider>
-          <AddItems />
-          <ListItems />
-      </Provider>
-    )
-```
-
-A difference is that the Provider is defined separately to the component. The Provider uses the same API as a React component would: state, and a setState method.  These state containers are essentially React components, but they do not have any view associated with them. For the packing list, this looks like this:
-
-```javascript
-import { Container } from "unstated";
-
-export default class ListContainer extends Container {
-  state = {
-    allItems: ["nachos", "burritos", "hot dog"],
-    newItemName: ""
-  };
-
-  addItem = () => {
-    this.setState(state => ({
-      allItems: [...state.allItems, state.newItemName],
-      newItemName: ""
-    }));
-  };
-
-  setNewItemName = event => {
-    this.setState({ newItemName: event.target.value });
-  };
-
-  clear = () => {
-    this.setState({ allItems: [] });
-  };
-}
-```
-
-Then, child components can be wrapped in Subscribers, and are passed state **containers** as props: 
-
-```javascript
-import React from "react";
-import { AddPackingItem } from "packlist-components";
-import ListContainer from "../Unstated/listContainer";
-import { Subscribe } from "unstated";
-
-const AddItems = props =>(
-      <Subscribe to={[ListContainer]}>
-        {list => (
-          <AddPackingItem
-            addItem={list.addItem}
-            setNewItemText={list.setNewItemName}
-            value={list.state.newItemName}
-            clear={list.clear}
-          />
-        )}
-      </Subscribe>
-    )
-```
-
-The container will then be able to notify the child components of any state change, as a regular React component would. This solution is really the simplest one, and the most consistent with how React work (even more than the Container API). It does, however, miss some more advanced features that Redux, or Mobx-State-Tree can use, such as out of the box support for Middleware or Time Travel.
-
-While Unstated is consistent with how React work, there is a slight difference: Unstated's setState is `async`, which means that it can be `await`ed, in case sequences of setStates with dependencies need to be done (note that these usually indicate that the components are too complex and may need to be broken up).
-
-
-## Redux
-
-See the [full redux code of packing app](https://codesandbox.io/s/github/GantMan/ReactStateMuseum/tree/master/React/redux)
-
-Redux is one of the most popular state management libraries. Like all the following solutions, it  is a 3rd party library that needs to be installed separately.
-
-Like Context, Redux also has the concept of Provider that wraps around the application. But there is no state management at the top level, so there is no props passed down to the components for the state. Instead, Redux defines a "global state", independently of the components. The global state is called the redux **store**. 
-
-```javascript
-import { Provider } from "react-redux";
-import configureStore from "./Redux/Store/configureStore";
-let store = configureStore();
-
-const App = props => (
-      <Provider store={store}>
-          <AddItems />
-          <ListItems />
-      </Provider>
-    )
-
-export default App
-```
-
-How does a component know which data to get, and when it should update? With Redux, you can define a "mapStateToProps" function, that selects the relevant parts of the state for a given component. 
-
-mapStateToProps is a function that takes the redux store (the global state), and returns an object whose keys are the name of the props that the child component expects, and the values are the part of the state that is relevant to that component.
-
-Then, there is a `connect` function that returns a higher-order component. This component has no props, but uses `mapStateToProps` to give props to its child component.
-
-The advantage: like when using Context with a wrapper component, the original component just accepts props, as it did before. No change is needed. For instance, the `ListItems` component is a wrapper around the list component, using `mapStateToProps` and `connect`:
-
-```javascript
-import {SimpleList} from "packlist-components";
-import { connect } from "react-redux";
-
-const mapStateToProps = state => ({ value: state.items.myItems });
-
-export default connect(mapStateToProps)(SimpleList);
-```
-
-Redux also uses the concept of dispatching operations to a store. There is a second argument to connect, called `mapDispatchToProps` that can "translate" the original callbacks that a component had to redux operations. Similarly, they just stay as props for the original component. For instance, the AddItems component would be defined like this:
-
-```javascript
-import { AddPackingItem } from "packlist-components";
-import { ItemActionCreators } from "../Redux/Actions/items";
-import { connect } from "react-redux";
-
-const mapStateToProps = state => ({ value: state.items.newItemName });
-
-const { setNewItemName, addItem, clear } = ItemActionCreators;
-
-const mapDispatchToProps = {
-  setNewItemText: e => setNewItemName(e.target.value),
-  addItem,
-  clear
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddPackingItem);
-
-```
-
-### Actions and Reducers 
-
-Then, Redux uses the concept of **actions** to affect the store.  The actions need to be defined, and in a second part they should be "interpreted" by a **reducer**. Each action should take the previous version of the store, and produce a new version of the store (with pure functions). 
-
-Do you remember the higher-order function called [reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)? It takes a list of elements, a function, and an initial value, and applies the function to every element of the list, accumulating the result, starting with the initial value.
-
-```javascript
-const array1 = [1, 2, 3, 4];
-const reducer = (accumulator, currentValue) => accumulator + currentValue;
-
-// 1 + 2 + 3 + 4
-console.log(array1.reduce(reducer));
-// expected output: 10
-
-// 5 + 1 + 2 + 3 + 4
-console.log(array1.reduce(reducer, 5));
-// expected output: 15
-```
-
-This is where the names **reducer** and **Redux** come from. Similarly, a reducer takes a list of actions, and an initial Redux store, to produce the current of the application.
-
-```javascript
-
-const actions = [ADD_ITEM, ADD_ITEM, RENAME_ITEM, ADD_ITEM, REMOVE_ITEM]
-const reducer = (store, action) => dispatch(store, action)
-
-reducer(emptyStore, actions)
-```
-
-This allows Redux to have "time travel", i.e., to store all the actions affecting the store as the application executes for debugging purposes. The store can then be produced at any point in time, by dispatching all or parts of the list.
-
-First, the actions need to be defined. For the packing list app, this would be:
-
-```javascript
-export const ItemsActions = {
-  ADD_ITEM: "ADD_ITEM",
-  CLEAR: "CLEAR",
-  SET_NEW_ITEM_NAME: "SET_NEW_ITEM_NAME"
-};
-
-// Action creators store.dispatch actions
-export const ItemActionCreators = {
-  addItem: () => ({type: ItemsActions.ADD_ITEM})
-
-  clear: () => ({type: ItemsActions.CLEAR})
-    
-  setNewItemName: value =>  ({type: ItemsActions.SET_NEW_ITEM_NAME, value: value})
-};
-```
-
-Then we need to define the reducers: the functions that, given an action, produce a new version of the store.
-
-```javascript
-import { ItemsActions } from "../Actions/items";
-import { combineReducers } from "redux";
-
-// shape is an empty array
-const INITIAL_STATE = {
-  myItems: ["nacho", "burrito", "hotdog"],
-  newItemName: ""
-};
-
-export function reducer(state = INITIAL_STATE, action) {
-  switch (action.type) {
-    case ItemsActions.ADD_ITEM:
-      return {
-        ...state,
-        myItems: [...state.myItems, state.newItemName],
-        newItemName: ""
-      };
-    case ItemsActions.CLEAR:
-      return {
-        ...state,
-        myItems: []
-      };
-    case ItemsActions.SET_NEW_ITEM_NAME:
-      return {
-        ...state,
-        newItemName: action.value
-      };
-    default:
-      return state;
-  }
-}
-
-// just one reducer here, but we can define several
-export default combineReducers({[reducer]});
-```
-
-The store would be created based on the reducers:
-
-```javascript
-import { createStore } from "redux";
-import RootReducer from "../Reducers/";
-
-const baseStore = createStore(RootReducer);
-export default initialState => {
-  return baseStore;
-};
-```
-
-### Middleware
-Redux also supports **middleware**: a layer of operations that can be inserted during state management. This allows for instance to transparently support logging, or client-server communication, by adding a middleware for this kind of operation. 
-
-Applying a middleware that logs all actions would look like this:
-
-```javascript
-import { createStore, applyMiddleware } from "redux";
-import RootReducer from "../Reducers/";
-
-const logger = store => next => action => {
-  console.log('dispatching', action)
-  let result = next(action)
-  console.log('next state', store.getState())
-  return result
-}
-
-
-let middleware = [logger];
-
-const baseStore = createStore(RootReducer, applyMiddleware(...middleware));
-export default initialState => {
-  return baseStore;
-};
-```
-
-There is much more on middleware [here](https://redux.js.org/advanced/middleware)
-The documentation of Redux in general is available [here](https://redux.js.org)
-
-### Downsides of Redux
-The downsides of Redux are:
-- A steep learning curve, with lots of new concepts.
-- It needs a lot of boilerplate. 
-
-Regarding boilerplate, it is common that adding a new features involves changing several files at once: the file where the store is defined, the one where the actions are defined, the one where the reducers are defined, as well as the components themselves. For the specific case of writing the reducers, it can be made a bit less painful by using [Immer](https://github.com/immerjs/immer), as shown [here](https://dev.to/mercatante/simplify-your-redux-reducers-with-immer-3e51).
-
-
-## MobX
-
-See [Packing app in Mobx here](https://codesandbox.io/s/github/GantMan/ReactStateMuseum/tree/master/React/mobx). Mobx is a state management solution that, unlike Redux, allows for a concise definition of the state management.
-
-With Mobx, a store is defined separately, as in Redux. MobX has no provider components, unlike the previous alternatives to setState. In the packing app, the top component would look like this:
-
-```javascript
-const App = () => (
-      <View>
-        <AddItems />
-        <ListItems />
-      </View>
-    )  
-```
-
-### Accessing the data, and observers
-
-The child Components can access the store directly and pick the state that they need to pass as props to the UI components. As always, it is still highly recommended to use "wrapper" components to not pass the Mobx store directly to the UI components. For the `AddItems` component, this looks like this:
-
-```javascript
-import React from "react";
-import { AddPackingItem } from "packlist-components";
-import ListStore from "../Mobx/listStore";
-import { observer } from "mobx-react";
-
-@observer
-export default class AddItems extends React.Component {
-  render() {
-    return (
-      <AddPackingItem
-        addItem={ListStore.addItem}
-        setNewItemText={ListStore.setNewItemName}
-        value={ListStore.newItemName}
-        clear={ListStore.clear}
-      />
-    );
-  }
-}
-```
-
-Notice the `@observer` special syntax. MobX uses the decorator and observer patterns. An observer gets notified when the objects that it observes changes (the data store). The decorator allows to implement the observer as seamlessly as possible, by wrapping the original component in a higher-order component.
-
-It is similar to `connect`, with the addition that the observer allows you to only re-render the components that change. In order to implement a similar functionality in Redux, more advanced functionality (reselect) is needed. 
-
-### The Mobx Store
-
-The store is defined as a simple javascript class, in which the state can be modified imperatively. The store defines which of the values in it are observable, and the operations to modify the store. 
-
-```javascript
-import { observable } from "mobx";
-
-class ObservableListStore {
-  @observable allItems = ["nacho", "burrito", "hotdog"];
-  @observable newItemName = "";
-
-  addItem = () => {
-    this.allItems.push(this.newItemName);
-    this.newItemName = "";
-  };
-
-  clear = () => {
-    this.allItems = [];
-  };
-
-  setNewItemName = e => {
-    this.newItemName = e.target.value;
-  };
-}
-
-const observableListStore = new ObservableListStore();
-export default observableListStore;
-```
-
-Notice how this is much more concise than Redux! It is so concise that it looks magic (and it is, in a way).
-
-### Pros, Cons and Mobx-state-tree
-
-Mobx is very simple to add to a code base, and in addition can be quite efficient, as the observer mechanism updates only components that have parts of the data that changed. This is more efficient and precise than relying on React's state diffing.
-
-On the other hand, the "observer magic" can be "too magic" for some people. Since Mobx is much more open-ended into how it should be used and how the store can be defined, it is harder to integrate middleware with it, and it is harder to have a state tree history like Redux has. Both functionalities require some assumptions on how the store is structured, that might not always be true with Mobx.
-
-There is, however, and additional component on top of Mobx, that solves these two issues of middleward and state history by imposing more constraints on the store. This is [Mobx-State-Tree](https://codesandbox.io/s/github/GantMan/ReactStateMuseum/tree/master/React/mobx-state-tree), or MST.
-
-With MST, it becomes a bit more work to add a store to an existing application, but this can pay off. For instance, there are two callbacks `onSnapshot` and `onPatch` that can be executed any time the state changes, and that allow to record history, similarly to Redux Time Travel. This also allows MST to support middleware, such as [these examples](https://github.com/mobxjs/mobx-state-tree/blob/master/packages/mst-middlewares/README.md).
-
-
-# Summary
-
-The simplest option to use is Unstated, as it is the most consistent with how React work. Mobx and Mobx-State-Tree are of intermediate complexity, while Redux has the most learning curve, and the most "boilerplate". Both MST and Redux have some additional, valuable functionality: Time-Travel and middleware. 
+One final note concerns (unstated-next)[https://github.com/jamiebuilds/unstated-next]. This is a very thin layer (30 lines of code!) on top of the useContext API, which makes it slightly easier to use. It is the updated version of unstated (see second page), for the versoin of react that uses hooks. 
