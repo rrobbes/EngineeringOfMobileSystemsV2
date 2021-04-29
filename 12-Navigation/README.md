@@ -282,13 +282,18 @@ The screen component should have no or very little actual functionality. Its onl
 
 Earlier, we managed state in a parent component, wich would pass callbacks to the child components. We can use the same callback mechanism for screens. The only difference is that screens can pass callbacks via params, instead of props (for now).
 
-To do callbacks between screens, each screen will receive the original callbacks, instead of the components. Each screen will define new callbacks, that will execute the original callbacks, and also execute the necessary navigation operations. Thus, the screens wrap the navigation operations so that the original components are not affected. Operating in this way, the two Components **do not need to know that anything changed if the navigation changes**. They can be used as they were used before. Only the screens have to be changed. See the example below:
+To do callbacks between screens, each screen will receive the original callbacks, instead of the components. Each screen will define new callbacks, that will execute the original callbacks, and also execute the necessary navigation operations. Thus, the screens wrap the navigation operations so that the original components are not affected. Operating in this way, the two Components **do not need to know that anything changed if the navigation changes**. They can be used as they were used before. Only the screens have to be changed. 
+
+[See the example here](https://snack.expo.io/@rrobbes/isolated-navigation).
+
+Note that his example is not ideal yet. This is because we currently have no easy way to share state between components. We would usually use a parent component for that, but due to React Navigation's API, we only have "brothers and sisters" Screen, which makes passing callbacks between them cumbersome. This will be fixed in [State Management](../13-StateManagement/README.md).
+
 
 
 
 ## Typing the navigation
 
-It can be easy to make mistakes when navigating to a route if there is no type checking, as the route is defined as one of several strings. Likewise, screens can expect parameters, but they also need to be typed to reduce errors. There is more information to do this [here](https://reactnavigation.org/docs/typescript/). Unfortunately, Expo snack does not support this, as it is (at the moment) using an older version of TypeScript, that can not be changed. However, a local installation of Expo should work here. Typing involves listing the available routes and expected parameters (using "undefined" if no parameters are expected for a given route) in a type definition. Then type definitions for a stack or tab navigator can be imported, and parametrized (since they use generics), with the type definition of the screens. For instance
+It can be easy to make mistakes when navigating to a route if there is no type checking, as the route is defined as one of several strings. Likewise, screens can expect parameters, but they also need to be typed to reduce errors. There is more information to do this [here](https://reactnavigation.org/docs/typescript/). Unfortunately, Expo snack does not support this, as it is (at the moment) using an older version of TypeScript, that can not be changed. However, a local installation of Expo should work here. Typing involves listing the available routes and expected parameters (using "undefined" if no parameters are expected for a given route) in a type definition. Then type definitions for a stack or tab navigator can be imported, and parametrized (since they use generics), with the type definition of the screens. For instance:
 
 ```typescript
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
