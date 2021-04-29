@@ -32,4 +32,6 @@ For simplicity, we have been ignoring the context for now, which prevents proper
 - use this context in screen components, to pass it to "regular components" as props
 
 
+# Solution
 
+See a solution [here](https://snack.expo.io/@rrobbes/flashcards-navigation-solution). Notice that the code at the top (until line 400) is unchanged; most components are reused as-is. Additional components are for the most part Navigation (TabNavigator, StackNavigator) and Screen components (DeckScreen, SelectScreen, ReviewScreen, EditDeckScreen, EditDeckCardScreen) , with a couple of normal components as the mode of interaction with screens is a bit different (SimpleDeckSelector, SimpleDeckEditor). The other important thing to notice is how the context is implemented as a reusable custom hook (useDeckContext, plus its type annotation AppContext), mostly based on code previously written earlier.
