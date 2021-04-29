@@ -199,9 +199,8 @@ The baseline allows us to understand how the app works normally. In this case, w
 - `AddItems`: a component that allows to add items to the state. 
 
 `AddItems` takes several props:
-- `setNewItemText`: a callback to set the name the current item to be added.
+
 - `addItem`: a callback to add a new item to the state, with the name being set earlier by `setNewItemText`.
-- `value`: the initial name of a newly created item.
 - `clear`: a callback to clear the list of items.
  
 We don't need to know how the `ListItems` and `AddItems` components are implemented. The goal is to reuse them, without changing them. So the only thing that is needed is to pass the appropriate props to them.
@@ -213,6 +212,7 @@ The App component can be implemented in React Native as such:
 export default function App() {
   const [allItems, setItems] = useState(['nachos', 'burritos', 'hot dog']);
   const clear = () => setItems([]);
+  const addItem = (item) => setItems([item, ...allItems])
 
   return (
     <SafeAreaView style={styles.root}>
@@ -221,7 +221,7 @@ export default function App() {
         keyboardShouldPersistTaps="always">
         <Text style={styles.welcome}>Welcome to useState</Text>
         <AddItems
-          addItem={(item) => setItems([item, ...allItems])}
+          addItem={addItem}
           clear={clear}
         />
         <ListItems allItems={allItems} />
