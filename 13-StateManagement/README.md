@@ -475,7 +475,7 @@ type AppContext = {
 
 // the reusable hook returns an object of the type of the context
 const useAppContext = (initialValues): AppContext => {
-    const [items, setItems] = useState();
+    const [items, setItems] = useState<string[]>(initialValues);
 
     const handleAddItem = (item) => {
         setItems([...items, item]);
