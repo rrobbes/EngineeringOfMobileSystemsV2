@@ -524,7 +524,9 @@ const AddNumber = ({onAdd}:{onAdd: NumCallback}) => {
 
 ```
 
-### A note on multiple contexts
+## Multiple contexts
+
+### Multiple different contexts
 
 It is perfectly possible to have multiple contexts. To do so, just add several context providers at the beginning of the application. Indeed, it is preferable to have multiple smaller contexts, used in fine-grained locations, rather than one large context shared by all components. For instance, you may have two contexts, ``ContextA`` and ``ContextB``, which some of your screens only using ``ContextA``, others only using ``ContextB``, others using possibly both (or none of them!).
 
@@ -543,6 +545,14 @@ const App = () => {
   )
 }
 ```
+
+### Multiple instances of the same context 
+
+This is possible. You can have several portions of the app that share the same type of context, but with different context values. Here is an example, based on the number list (it also shows how to use the number list components without navigation).
+
+[See the example here](https://snack.expo.io/@rrobbes/multiple-contexts)
+
+Notice how components (the bottom 2) can share the same context, being then updated together (but still maintain some state independently, such as for conditional rendering), and how other components evolve independently (the top component vs the bottom 2). 
 
 # Other state management options
 There are a variety of other state management options. Some others, namely Unstated, Redux and MobX, are described [in a second page](./Others.md). For the purpose of this class, they are not really necessary, but might be useful for you in the future. State management APIs such as Redux and MobX are significantly more powerful, allowing things such as logging of state changes, undoing changes to the state, or keeping some state on a centralized server, rather than just on the device.
