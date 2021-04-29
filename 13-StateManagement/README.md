@@ -424,7 +424,7 @@ import AppContext from "./src/context/AppContext";
 
 
 const useAppContext = (initialValues) => {
-    const [items, setItems] = useState();
+    const [items, setItems] = useState(initialValues);
 
     const handleAddItem = (item) => {
         setItems([...items, item]);
