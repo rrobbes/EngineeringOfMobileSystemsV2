@@ -145,13 +145,19 @@ const withError = () => {
 
 The catch() callback will be executed.
 
-The idea is to split a process in several step, such as the webservice scenario above.
+The idea is to split a process in several step, such as the webservice scenario above:
+
+- build a request object
+- then (if it succeeds), connect to the server
+- then, send the request
+- then, receive the response
+- then parse it to extract the data
 
 
 
 ## Alternative to Promises: Async/await
 
-Even if Promises are nicer than the "callback pyramid of doom", the code is still somewhat verbose. In ES 2017, an alternative was introduced: the `async` and `await` keyworkds. This allows us to write async code “as if” it were synchronous. It is still non-blocking. 
+Even if Promises are nicer than the "callback pyramid of doom", the code is still somewhat verbose. In Javascrit ES 2017, an alternative was introduced: the `async` and `await` keywords. This allows us to write async code “as if” it were synchronous. It is still non-blocking. 
 
 A function can be marked as `async`, and it will automatically be asynchronous and return a Promise. To do so, just use the `async` keyword:
 
@@ -187,3 +193,13 @@ const awaitError = async () => {
 }   
 ```
 
+Note that **async/await is "contagious"**: if you await for the result of a function, you have defined an async function too. If you need a function that is not async at some point, you can define a callback (or use a Promise), to get notified of the result.
+
+### Extended API for promises
+
+Promises have more methods, to handle more advanced use cases, [as described in the documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). In particular more advanced concurrency patterns using a list of tasks can be used. These include:
+
+- `Promise.all(promises)`: takes a list of promises as input, and returns a single promise that resolves when all of the promises in the list succeed. If one fails, it fails. Useful when you would need for instance to execute three webservice request in parallel, but need to wait for all of them.
+- `Promise.race(promises)`: takes a list of promises as input, and returns the result of the first promise that succeeds or rejects, ignoring the others.
+- `Promise.any(promises)`:  takes a list of promises as input, and returns the result of the first promise that succeeds, ignoring the others.
+- `Promise.allSettled(promises)`: takes a list of promises as input, and returns the result of all the promises (successes or errors).
