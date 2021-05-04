@@ -1,9 +1,11 @@
 # Lab 7: State and Navigation
 
-The goal of this lab is to practice both [Navigation](../12-Navigation/README.md) and [State Management](../13/StateManagement/README.md). As a starting point, we will use the [flashcards with conditional rendering layout](https://snack.expo.io/@rrobbes/flashcards-conditional-layout). This version has:
+The goal of this lab is to practice both [Navigation](https://github.com/rrobbes/EngineeringOfMobileSystemsV2/tree/main/12-Navigation) and [State Management](https://github.com/rrobbes/EngineeringOfMobileSystemsV2/tree/main/13-StateManagement). As a starting point, we will use the [flashcards with conditional rendering layout](https://snack.expo.io/@rrobbes/flashcards-conditional-layout). This version has:
 - a component to select a deck of cards
 - a component to view a deck of cards, marking cards as right or wrong (the "view mode").
 - a component to edit a deck of cards, via adding cards, deleting cards, or editing them, as well as renaming a deck (the "edit mode").
+
+As an example, refer to [this one seen in class](https://snack.expo.io/@rrobbes/contextual-navigation)
 
 This version is rendered via conditional rendering only. The tasks to do are the following, while trying to reuse as many existing components as possible:
 
@@ -30,4 +32,6 @@ For simplicity, we have been ignoring the context for now, which prevents proper
 - use this context in screen components, to pass it to "regular components" as props
 
 
+# Solution
 
+See a solution [here](https://snack.expo.io/@rrobbes/flashcards-navigation-solution). Notice that the code at the top (until line 400) is unchanged; most components are reused as-is. Additional components are for the most part Navigation (TabNavigator, StackNavigator) and Screen components (DeckScreen, SelectScreen, ReviewScreen, EditDeckScreen, EditDeckCardScreen) , with a couple of normal components as the mode of interaction with screens is a bit different (SimpleDeckSelector, SimpleDeckEditor). The other important thing to notice is how the context is implemented as a reusable custom hook (useDeckContext, plus its type annotation AppContext), mostly based on code previously written earlier.
