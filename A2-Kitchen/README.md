@@ -67,7 +67,7 @@ https://world.openfoodfacts.org/), and if succesful, it retrieves data about the
 
 Additional queries are implemented:
 - Items that have a ripeness status need to be checked regularly. If the last check was more than 3 days ago, they are added.
-- Items that are ripe, and open items, are added to the "expiring soon" query
+- Items that are ripe, and open items, are added to the "expiring soon" query; items that are frozen are removed from it (unless their new expiry date is coming up)
 
 ### Grocery list (additional work for a pair)
 
