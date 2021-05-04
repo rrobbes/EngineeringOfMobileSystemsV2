@@ -89,7 +89,7 @@ Typescript provides a generic type definition for a promise: `Promise<T>`, where
 
 Promises are not meant to be used directly (don't access the internal data), but rather with callbacks. We specify a callbacks with the `then`, `catch` or `finally` methods. 
 
-- `Promise.then(callback)`: executes the callback passed in as its argument after the previous promise block returns. `then` can also take a second argument, which is a callback to execute when an error occurs. 
+- `Promise.then(fullfilledCallback, failedCallback)`: executes the callbacks passed in as its argument after the previous promise block returns. `then` can also take a second argument, which is a callback to execute when an error occurs. Both callbacks are optional and can be null.
 - `Promise.catch(callback)`: executes the callback if any of the previous promise blocks has an error. It is equivalent to `then`, but with an empty first argument
 - `Promise.finally(callback)`: executes the callback regardless of whether the promise failed or not. The callback does not have the information of the result, it has no arguments at all. 
 
