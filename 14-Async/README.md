@@ -272,4 +272,4 @@ const awaitError = async () => {
 
 ## Async APIs
 
-Many APIS have async functions. For instance, many functions in expo's API are async, such as functions that request permissions (like the (BarCodeScanner)[https://docs.expo.io/versions/v40.0.0/sdk/bar-code-scanner/] ). In the next lesson we will see how we can use callbacks and the useEffect hook to integrate async code in react native applications.
+Many APIS have async functions. For instance, many functions in expo's API are async, such as functions that request permissions (like the [BarCodeScanner](https://docs.expo.io/versions/v40.0.0/sdk/bar-code-scanner/) ). In the next lesson we will see how we can use callbacks and the useEffect hook to integrate async code in react native applications.
