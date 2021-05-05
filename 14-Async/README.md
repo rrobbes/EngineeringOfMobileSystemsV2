@@ -225,7 +225,7 @@ Note that calling an async function is still non-blocking, since it returns a pr
 ### Async is contagious
 Note that **async/await is "contagious"**: if you await for the result of a function, you have defined an async function too. One you "step in" the async world, it is hard to step out. Any function that needs the result during its execution will, by necessity, have to be async too:
 
-```javscript
+```javascript
 
 const f = async() => {
   await wait(4)
@@ -242,7 +242,8 @@ const stillAsync = async() => {
 ```
 
 If you need a function that is not async at some point, you can define a callback (or use a Promise), to get notified of the result. If you want to execute an async operation, you can also wrap it in an anonymous function.
-```
+
+```javascript
 const notAsyncAnymore = () => {
   stillAsync().then(result => console.log(result))
 }
