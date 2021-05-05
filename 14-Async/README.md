@@ -107,7 +107,7 @@ wait(2).then(() => console.log("done waiting 2 sec!"));
 
 ```
 
-## Promise chaining
+### Promise chaining
 
 An important property of promises is that they can be **chained**, to describe a process that takes several steps.
 This is because `then()` returns a new Promise object, on which we can call another `then`. So, we can do:
@@ -116,6 +116,7 @@ This is because `then()` returns a new Promise object, on which we can call anot
 
 const wait = s => new Promise(resolve => setTimeout(resolve, s * 1000));
 
+// defines a sequence of steps
 wait(3)
     .then(() => console.log("waited 3 sec!"))
     .then(() => wait(2))
@@ -124,7 +125,7 @@ wait(3)
     .then(() => console.log("waited 1 sec!"))
 ```
 
-We can also get notified when a problem occured. For instance, suppose that a function crashes:
+We can also get notified when a problem occured, and react to it by "catching" it. For instance, suppose that a function crashes:
 
 ```javascript
 
@@ -143,41 +144,117 @@ const withError = () => {
 }
 ```
 
-The catch() callback will be executed.
+The `catch()` callback will be executed. `catch()` can handle both errors and Promises that were rejected.
 
-The idea is to split a process in several step, such as the webservice scenario above:
+### Building with promises
+
+The idea is to split a process in several step, such as the webservice scenario at the start of the lesson, which we can define in a series of steps: 
 
 - build a request object
 - then (if it succeeds), connect to the server
 - then, send the request
 - then, receive the response
 - then parse it to extract the data
+- catch errors and report them (if possible, act on them)
 
+Note that this sequence of steps returns a promise too. A final callback could be use to receive the parsed data and act on it.
+
+While this is sequential, we could imagine scenarios that mix sequential chain of promises with parallel execution. For instance, doing several instances of the process above, but each of them in parallel, if our application needs to perform several requests.
+
+
+### Extended API for promises
+
+Promises have more methods, to handle more advanced use cases, [as described in the documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). In particular more advanced concurrency patterns using a list of tasks can be used. These include:
+
+- `Promise.all(promises)`: takes a list of promises as input, and returns a single promise that resolves when all of the promises in the list succeed. If one fails, it fails. Useful when you would need for instance to execute three webservice request in parallel, but need to wait for all of them.
+- `Promise.race(promises)`: takes a list of promises as input, and returns the result of the first promise that succeeds or rejects, ignoring the others.
+- `Promise.any(promises)`:  takes a list of promises as input, and returns the result of the first promise that succeeds, ignoring the others.
+- `Promise.allSettled(promises)`: takes a list of promises as input, and returns the result of all the promises (successes or errors).
 
 
 ## Alternative to Promises: Async/await
 
 Even if Promises are nicer than the "callback pyramid of doom", the code is still somewhat verbose. In Javascrit ES 2017, an alternative was introduced: the `async` and `await` keywords. This allows us to write async code “as if” it were synchronous. It is still non-blocking. 
 
+### Async functions
 A function can be marked as `async`, and it will automatically be asynchronous and return a Promise. To do so, just use the `async` keyword:
 
 ```javascript
-const asyncArrow = async () => { ... }
+const asyncArrowFunc = async () => { ... }
 async function asyncFunc() { ...}
 ```
 
-Within an async function, you can `await` the value of another async function or Promise, by using the `await` keyword.
+Importantly, **anything returned by an async function is a Promise**. If you return a Promise, it will be returned as-is by an async function. If you return something that is **not** a Promise, it will be automatically wrapped in a Promise. Typescript can help you in making this more obvious. For instance:
+
+```typescript
+const doesNotTypeCheck = async (): number => {
+  return 4
+}
+
+const typeChecks = async (): Promise<number> => {
+  return 4
+}
+```
+
+### await
+
+Within an async function, you can `await` the value of a Promise (or of another async function since it returns a Promise), by using the `await` keyword. **You can only use the await keyword in async functions**. When using await, the code execution is blocked so that the Promise is settled. If it succeeds, the Promise value is returned. If it fails, an Error is thrown. Since `awaiting` the value can take an unbounded amount of time and can fail, any function that uses `await` may also take an unbounded amount of time, or may fail. Thus, this function must also be an async function.
 
 ```javascript
 const asyncFunc = async () => {
-    const x = somePromise()
-    const y = somethingElse
-    return await x + y
+    const myProm = somePromise() // x contains a Promise object
+    const x = await myProm // myObject will be the fulfilled promised
+    const y = somethingElse() // a regular function
+    return x + y
+}
+```
+
+Note that `await` may be used in any expression, for instance:
+```javascript
+
+const asyncFunc = async () => {
+    const x = await somePromise() // x contains a Promise object
+    const y = 5 + await somethingElseAsync() // another async function
+    return x + y
 }
 ```
 
 
-Note that async functions and the await keyword are still non-blocking. Async/await looks much more synchronous, but it is asynchronous from then on.
+Note that calling an async function is still non-blocking, since it returns a promise. Only uses of the await keyword are blocking, but are always in async functions. Thus, while async/await looks much more synchronous than using Promises, code that uses it is asynchronous from then on.
+
+### Async is contagious
+Note that **async/await is "contagious"**: if you await for the result of a function, you have defined an async function too. One you "step in" the async world, it is hard to step out. Any function that needs the result during its execution will, by necessity, have to be async too:
+
+```javscript
+
+const f = async() => {
+  await wait(4)
+  return 5
+}
+
+const isAsync = async() =>    await f() + 4
+
+const stillAsync = async() => {
+  const result = awayt isAsync()
+  return result * result
+} 
+
+```
+
+If you need a function that is not async at some point, you can define a callback (or use a Promise), to get notified of the result. If you want to execute an async operation, you can also wrap it in an anonymous function.
+```
+const notAsyncAnymore = () => {
+  stillAsync().then(result => console.log(result))
+}
+
+const alsoNotAsync = () => {
+  (async () => {console.log( await stillAsync() ) })()
+}
+
+// note that both functions do not return the result, as they would need to be async to do this.
+```
+
+### Async and errors
 
 What happens if an error occurs? When using async/await, we should use a try/catch block, which works similarly as it would in Java:
 
@@ -193,13 +270,6 @@ const awaitError = async () => {
 }   
 ```
 
-Note that **async/await is "contagious"**: if you await for the result of a function, you have defined an async function too. If you need a function that is not async at some point, you can define a callback (or use a Promise), to get notified of the result.
+## Async APIs
 
-### Extended API for promises
-
-Promises have more methods, to handle more advanced use cases, [as described in the documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). In particular more advanced concurrency patterns using a list of tasks can be used. These include:
-
-- `Promise.all(promises)`: takes a list of promises as input, and returns a single promise that resolves when all of the promises in the list succeed. If one fails, it fails. Useful when you would need for instance to execute three webservice request in parallel, but need to wait for all of them.
-- `Promise.race(promises)`: takes a list of promises as input, and returns the result of the first promise that succeeds or rejects, ignoring the others.
-- `Promise.any(promises)`:  takes a list of promises as input, and returns the result of the first promise that succeeds, ignoring the others.
-- `Promise.allSettled(promises)`: takes a list of promises as input, and returns the result of all the promises (successes or errors).
+Many APIS have async functions. For instance, many functions in expo's API are async, such as functions that request permissions (like the (BarCodeScanner)[https://docs.expo.io/versions/v40.0.0/sdk/bar-code-scanner/] ). In the next lesson we will see how we can use callbacks and the useEffect hook to integrate async code in react native applications.
