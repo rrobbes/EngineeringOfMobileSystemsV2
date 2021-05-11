@@ -92,20 +92,22 @@ Some components need to perform a side effect when their props and state change.
 
 ```javascript
 const UserProfile = ({userID}) => {
-    const [profile, setProfile] = useState("user data")
+    const [profile, setProfile] = useState<UserData|null>(null)
 
     
 
     useEffect(() => {
-        const getProfileFromWeb = userID => {
+        const getProfileFromWeb = async (userID) => {
         // fetch data for user based on userID
-        userData = // fetch, ...
+        const response = await fetch("http://example.com/userprofile?id=" + userID)
+        const userData = await response.json()
         setProfile(userData)
         }
         getProfileFromWeb(userID)
     }, [userID])
 
-    return // render the user profile
+    if (profile === null) return <Text>Loading data ...</Text>
+    return <UserData profile={profile} />
 }
 ```
 
