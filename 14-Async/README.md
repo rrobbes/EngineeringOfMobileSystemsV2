@@ -203,8 +203,8 @@ Within an async function, you can `await` the value of a Promise (or of another 
 ```javascript
 const asyncFunc = async () => {
     const myProm = somePromise() // x contains a Promise object
-    const x = await myProm // myObject will be the fulfilled promised
     const y = somethingElse() // a regular function
+    const x = await myProm // myObject will be the fulfilled promised
     return x + y
 }
 ```

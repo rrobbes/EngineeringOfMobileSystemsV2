@@ -32,3 +32,9 @@ Then do the following tasks, refering to the class and to the API documentation 
 - Add a button that starts both previous requests at once, but in sequence.
 - Add a button that starts both previous requests at once, and displays the results of the first one that finishes.
 - Add a button that starts both previous requests at once, waits for the results, and displays all of them together.
+
+### Solution
+
+Here is a [solution to all 10 tasks](https://snack.expo.io/@rrobbes/async-practice-solution). I tried to vary a bit the usage patterns of promises and async/await to show how you can use them more broadly. For the last tasks, you can experiment with the numbers of results to change the time a request takes to complete, and see how this affects the execution of the requests (e.g., fetching 200 users rather than 20).
+
+https://snack.expo.io/@rrobbes/async-practice-solution
