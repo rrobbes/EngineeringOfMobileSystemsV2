@@ -123,9 +123,10 @@ const UserProfile = ({userID}) => {
 
 `useEffect` accepts as second argument an array of "watched" object or properties. If any one of the "watched" objects change when the component is re-rendered, the effect is re-executed (the cleanup of the previous effect will execute too). If none of the "watched" objects in the array have changed, the effect will be skipped. In the example above, the effect will re-run only if the `userID` prop changes. This makes sense, because it means we want to display a new profile. Note that **it is very important to list all the important properties in this array**: if some are missed, the effect may fail to run when you expect it to run. Essentially, every piece of state or prop that is referenced in the effect should be put in the array to be "watched".
 
-You will also note that I am also defining functions inside effects. This is slightly more convenient than defining them inside the component itself, as they would then need to be listed in the dependencies. See [this FAQ on this](https://reactjs.org/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies).
+You will also note that I am also defining functions inside effects. This is slightly more convenient than defining them inside the component itself, as they would then need to be listed in the dependencies. See [this FAQ on this](https://reactjs.org/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies). Functions defined outside of components are ok too.
 
-**Running an effect only once** is possible. In that case, the second argument can be set to an empty array. This ensures that the array will never change. In that case, the effect will be run when the component is mounted, and the cleanup will be performed when the component is unmounted.
+See a runnable example, with loading a user list and paging [here](https://snack.expo.io/@rrobbes/user-list-api-with-useeffect-and-paging). Here we are running a query in small portions, on demand, when a user reaches the end of the list. This creates an effect similar to the "infinite scrolling lists". Of note, the FlatList also supports a second pattern data refresh pattern, which is the "pull to refresh pattern", [see the documentation of the onRefresh prop](https://reactnative.dev/docs/flatlist#onrefresh).
+
 
 
 ## Handling cleanup
@@ -135,8 +136,8 @@ To allow for effect cleanup, `useEffect` allows to specify a cleanup function. I
 At first glance, one could think that the cleanup function could be passed as a third argument, but this would have issues. In particular, if the cleanup function needs data from the effect, it would need to be stored in the component state. By returning a callback, this data can be kept in the scope of the effect only. Imagine a component that logs a user in, and gets a session ID. When the component is unmounted, the user would log out, passing out the session ID. We can either store this in the state, or just keep this in scope of the effect and the cleanup function.
 
 When is it time to cleanup? By default, it is:
-- When the component is unmounted
-- Before the effect is re-run
+- When the component is unmounted, to release all resources.
+- Before the effect is re-run if it depends on a dependency from the dependency arrays. This allows to reallocate resources if needed. For example, if a prop indicates a data source to monitor, and it changes from A to B, we want to unsubscribe from A during cleanup, before subscribing to B when running the effect.
 
 For instance, a subscription ([example from here](https://reactjs.org/docs/hooks-effect.html#example-using-hooks-1)) could look like: 
 
