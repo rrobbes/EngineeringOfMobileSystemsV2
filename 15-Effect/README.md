@@ -57,7 +57,7 @@ Asking for permissions is an async operation (as it requires user interaction). 
 
 ```typescript
 export default function App() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [hasPermission, setHasPermission] = useState<boolean|null>(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   useEffect(() => {
