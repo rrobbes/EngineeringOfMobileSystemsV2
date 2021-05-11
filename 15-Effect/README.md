@@ -51,38 +51,50 @@ The dependency array argument specifies when the effect should be run. In it, we
 The simplest form of `useEffect` takes as argument a function, that will be executed **after the component is rendered** for the first time. The effect is allowed to change the state of the component, which will re-render it. For instance, this is very often used to obtain permissions.
 
 
-Some of the operations in the expo APIs access sensitive data, such as pictures, contact, or the location. Applications need to ask the user for permission to access these. The user has every right to deny said permissions. Once a permission is denied, it is pretty hard to get it back (users have to manually enable them back). This means that it is important to explain clearly (and convincingly) why the app needs specific permissions.
+Some of the operations in the expo APIs access sensitive data, such as pictures, contact, or the location. Applications need to ask the user for permission to access these. The user has every right to deny said permissions. Once a permission is denied, it is pretty hard to get it back (users have to manually enable them back). This means that it is important to explain clearly (and convincingly) why the app needs specific permissions. You can read more [about Permissions](https://docs.expo.io/versions/latest/sdk/permissions/#permissionresponse), including the structure of Permission objects, and the various types of permissions.
 
-Asking for permissions is an async operation (as it requires user interaction). Components that require permissions specify it in the documentation. For instance, to access the camera one would consult [the documentation](https://docs.expo.io/versions/latest/sdk/camera/#cameraisavailableasync-boolean). In this case, the pattern is the following:
+Asking for permissions is an async operation (as it requires user interaction). Components that require permissions specify it in the documentation. For instance, to access the camera one would consult [the documentation](https://docs.expo.io/versions/latest/sdk/camera/#cameraisavailableasync-boolean). 
+
+You can see an example of a basic camera component asking for permissions [in this expo snack](https://snack.expo.io/@rrobbes/basic-camera-usage). The most relevant piece of code from the snack is the following:
 
 ```typescript
+
+// a type enumerating the possible values of the permission status
+type permission = "granted" | "denied" | "undetermined" | "pending"
+
 export default function App() {
-  const [hasPermission, setHasPermission] = useState<boolean|null>(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [hasPermission, setHasPermission] = useState<permission>("pending");
 
   useEffect(() => {
-    const askPermission = (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })
-    askPermission();
-  }, []);
+      Camera.requestPermissionsAsync().then(perm => setHasPermission(perm.status))
+  }, []); //empty dependency array, runs only once
 
-  if (hasPermission === null) {
-    return <View />;
+  switch(hasPermission) {
+    case "pending": 
+      return <Text>Asking for permission</Text>
+    case "undetermined":
+    case "denied": 
+      return <Text>No access to camera</Text>
+    case "granted": 
+      return (
+        <View style={styles.container}>
+          <FlippableCamera />
+        </View>
+      )
   }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
-  return (
-    <View style={styles.container}>
-      <Camera style={styles.camera} type={type}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-
+}
 ```
 
-Note that the code is a bit more complex since the permission is an async operation, but we can't make the effect async.
+You will notice that the code differs from the one from the expo documentation. In particular, I find it more readable to use a Promise inside useEffect, rather than async code (especially since the "promise chain" is short). This is because it is possible, but not convenient, to `await` for an async operation in an effect, as the effect itself can not be async. For reference, the effect in the original code is the following:
+
+```typescript
+ useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+  ```
 
 
 
@@ -94,14 +106,12 @@ Some components need to perform a side effect when their props and state change.
 const UserProfile = ({userID}) => {
     const [profile, setProfile] = useState<UserData|null>(null)
 
-    
-
     useEffect(() => {
         const getProfileFromWeb = async (userID) => {
-        // fetch data for user based on userID
-        const response = await fetch("http://example.com/userprofile?id=" + userID)
-        const userData = await response.json()
-        setProfile(userData)
+            // fetch data for user based on userID, here with async/await
+            const response = await fetch("http://example.com/userprofile?id=" + userID)
+            const userData = await response.json()
+            setProfile(userData)
         }
         getProfileFromWeb(userID)
     }, [userID])
@@ -112,6 +122,8 @@ const UserProfile = ({userID}) => {
 ```
 
 `useEffect` accepts as second argument an array of "watched" object or properties. If any one of the "watched" objects change when the component is re-rendered, the effect is re-executed (the cleanup of the previous effect will execute too). If none of the "watched" objects in the array have changed, the effect will be skipped. In the example above, the effect will re-run only if the `userID` prop changes. This makes sense, because it means we want to display a new profile. Note that **it is very important to list all the important properties in this array**: if some are missed, the effect may fail to run when you expect it to run. Essentially, every piece of state or prop that is referenced in the effect should be put in the array to be "watched".
+
+You will also note that I am also defining functions inside effects. This is slightly more convenient than defining them inside the component itself, as they would then need to be listed in the dependencies. See [this FAQ on this](https://reactjs.org/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies).
 
 **Running an effect only once** is possible. In that case, the second argument can be set to an empty array. This ensures that the array will never change. In that case, the effect will be run when the component is mounted, and the cleanup will be performed when the component is unmounted.
 
