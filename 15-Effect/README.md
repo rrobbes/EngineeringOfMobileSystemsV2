@@ -85,6 +85,35 @@ export default function App() {
 Note that the code is a bit more complex since the permission is an async operation, but we can't make the effect async.
 
 
+
+## useEffect on prop/state change
+
+Some components need to perform a side effect when their props and state change. For instance, a component that shows user profiles:
+
+```javascript
+const UserProfile = ({userID}) => {
+    const [profile, setProfile] = useState("user data")
+
+    
+
+    useEffect(() => {
+        const getProfileFromWeb = userID => {
+        // fetch data for user based on userID
+        userData = // fetch, ...
+        setProfile(userData)
+        }
+        getProfileFromWeb(userID)
+    }, [userID])
+
+    return // render the user profile
+}
+```
+
+`useEffect` accepts as second argument an array of "watched" object or properties. If any one of the "watched" objects change when the component is re-rendered, the effect is re-executed (the cleanup of the previous effect will execute too). If none of the "watched" objects in the array have changed, the effect will be skipped. In the example above, the effect will re-run only if the `userID` prop changes. This makes sense, because it means we want to display a new profile. Note that **it is very important to list all the important properties in this array**: if some are missed, the effect may fail to run when you expect it to run. Essentially, every piece of state or prop that is referenced in the effect should be put in the array to be "watched".
+
+**Running an effect only once** is possible. In that case, the second argument can be set to an empty array. This ensures that the array will never change. In that case, the effect will be run when the component is mounted, and the cleanup will be performed when the component is unmounted.
+
+
 ## Handling cleanup
 
 To allow for effect cleanup, `useEffect` allows to specify a cleanup function. If cleanup is needed, the effect function returns a cleanup callback function. Otherwise, it returns nothing.  This function will be executed **when it is time to cleanup**. 
@@ -121,36 +150,9 @@ function FriendStatus(props) {
 }
 ```
 
-### useEffect on prop/state change
-
-Some components need to perform a side effect when their props and state change. For instance, a component that shows user profiles:
-
-```javascript
-const UserProfile = ({userID}) => {
-    const [profile, setProfile] = useState("user data")
-
-    
-
-    useEffect(() => {
-        const getProfileFromWeb = userID => {
-        // fetch data for user based on userID
-        userData = // fetch, ...
-        setProfile(userData)
-        }
-        getProfileFromWeb(userID)
-    }, [userID])
-
-    return // render the user profile
-}
-```
-
-`useEffect` accepts as second argument an array of "watched" object or properties. If any one of the "watched" objects change when the component is re-rendered, the effect is re-executed (the cleanup of the previous effect will execute too). If none of the "watched" objects in the array have changed, the effect will be skipped. In the example above, the effect will re-run only if the `userID` prop changes. This makes sense, because it means we want to display a new profile. Note that **it is very important to list all the important properties in this array**: if some are missed, the effect may fail to run when you expect it to run. Essentially, every piece of state or prop that is referenced in the effect should be put in the array to be "watched".
-
-**Running an effect only once** is possible. In that case, the second argument can be set to an empty array. This ensures that the array will never change. In that case, the effect will be run when the component is mounted, and the cleanup will be performed when the component is unmounted.
 
 
-
-### Multiple useEffects
+## Multiple useEffects
 
 It is allowed to use multiple effects in a single component. This is even recommended. It allows to better separate concern (e.g. one effect for loading things from disk, another effect for checking a webservice periodically, etc). Further, this allows to better specify when each effect should be run. Each effect can "watch" different properties and update at different paces, instead of recomputing all effects at once. For instance:
 
