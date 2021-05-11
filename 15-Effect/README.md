@@ -126,18 +126,19 @@ function FriendStatus(props) {
 Some components need to perform a side effect when their props and state change. For instance, a component that shows user profiles:
 
 ```javascript
-const UserProfile = props => {
+const UserProfile = ({userID}) => {
     const [profile, setProfile] = useState("user data")
 
-    const getProfileFromWeb = userID => {
-        // fetch data for user based on userID
-        userData = // ...
-        setProfile(userData)
-    }
+    
 
     useEffect(() => {
-        getProfileFromWeb(props.userID)
-    }, [props.userID])
+        const getProfileFromWeb = userID => {
+        // fetch data for user based on userID
+        userData = // fetch, ...
+        setProfile(userData)
+        }
+        getProfileFromWeb(userID)
+    }, [userID])
 
     return // render the user profile
 }
@@ -154,22 +155,28 @@ const UserProfile = props => {
 It is allowed to use multiple effects in a single component. This is even recommended. It allows to better separate concern (e.g. one effect for loading things from disk, another effect for checking a webservice periodically, etc). Further, this allows to better specify when each effect should be run. Each effect can "watch" different properties and update at different paces, instead of recomputing all effects at once. For instance:
 
 ```javascript
-const LoadAndPing = props => {
-    const loadDataFromDisk = ()) => // ...
-    useEffect(() => loadDataFromDisk(props.fileName), [props.fileName])
-
-    const pingWebService = () => {
-        fetch(props.url).then( //... 
-    }
+const LoadAndPing = ({url, fileName}) => {
     
     useEffect(() => {
+        const loadDataFromDisk = ()) => // ...
+        loadDataFromDisk(props.fileName)
+    }, [fileName])
+
+    
+    
+    useEffect(() => {
+        const pingWebService = () => {
+        fetch(url).then( //... 
+        }
         // check the web service every 30 seconds
         const interval = setInterval(pingWebService, 30 * 1000)
         // return method to do cleanup on unmount
         return () => clearInterval(interval)
-    }, [props.url])
+    }, [url])
 }
 ```
 
-[More on useEffect](https://reactjs.org/docs/hooks-effect.html)
-
+## Further readings 
+- [More on useEffect](https://reactjs.org/docs/hooks-effect.html)
+- [useEffect FAQ](https://reactjs.org/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies)
+- [useEffect with fetching data](https://www.robinwieruch.de/react-hooks-fetch-data)
