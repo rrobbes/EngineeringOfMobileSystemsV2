@@ -193,6 +193,22 @@ const LoadAndPing = ({url, fileName}) => {
 }
 ```
 
+## More on data fetching with useEffect
+
+We have seen how to do basic data fetching with useEffect. We even have a runnable example (with paging in a scrollable list) [in this snack](https://snack.expo.io/@rrobbes/user-list-api-with-useeffect-and-paging). However, there is more to it. There are two important points to consider:
+
+- Web service queries may be slow, either because of a slow connection, an overloaded server, or a very large query (or possibly other factors).
+- The whole process may fail, for instance if the web server is not reachable (no cellular connection, or the web server is down), or if the query is incorrect. Even google's services are occasionally down, so it can happen to any server.
+
+The best way to handle this on the client side is to show this information to the user. Essentially, we need additional state to keep track of the status of the query. We can then use conditional rendering to render different things depending on the query's status. The process when doing a query would look like this:
+
+- First, set the additional state to denote that we are loading data. This will cause the component to re-render, and it can show a "loading" indicator where it is relevant in the UI.
+- Then, execute the query, and wait for the results.
+- If there is an error (a particular error status is returned, or an exception is thrown), then set the query status to an "error status", instead of a loading status. The component will be re-rendered, and can use conditional rendering to show that an error occured, as it sees fit (maybe asking the user to retry, if relevant).
+- When the query returns normally, parse the data. Set the query status to "complete", and set the relevant component state to the result of the query. This re-renders the component and we can show the normal result.
+
+Note that this logic is rather independent of an individual component. It might even be extracted into a "custom hook", reusable by various component. This is what the last link in "further readings" does at some point.
+
 ## Further readings 
 - [More on useEffect](https://reactjs.org/docs/hooks-effect.html)
 - [useEffect FAQ](https://reactjs.org/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies)
