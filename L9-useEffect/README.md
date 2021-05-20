@@ -21,6 +21,10 @@ Now, we will try some "optimization" of the queries. If we assume it is expensiv
 - Notice how when you do a "heavyweight" query, you have to query data for multiple users. If you browse two users that are close together in the list you might query for their data twice. Try to cache the data that you are querying for the "heavyweight" query, in case the app users browses two users close in the list. To better see this, make the "heavyweight" query slower by waiting for a few seconds.
 - Finally, assume that doing a "heavyweight" query is not expensive per se, but it is very slow. In that case, we would not want to do it when we browse a user, since it will be take too long. Rather, we would want to do the heavyweight query immediately after the lightweight query, so that the request is executing while the user is scrolling about the list. Implement this.
 
-### Custom Hooks
+## Custom Hooks
 
 Finally, in case you have more time: based on the information in the page [how to fetch data with react hooks](https://www.robinwieruch.de/react-hooks-fetch-data), implement a custom hook for data fetching, that handles the state for data loading and error handling, and use it in the components. To test it, extend the queries to simulate random waiting times, and occasional (random) errors when loading the data.
+
+## Solutions
+- [Solution without caching](https://snack.expo.io/@rrobbes/lab-9-solution)
+- [Advanced solution, with caching](https://snack.expo.io/@rrobbes/lab-9-advanced-solution)
