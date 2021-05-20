@@ -42,7 +42,7 @@ There is a variety of sensors that the device contains. Each of these sensors ca
 
 Examples of sensor usages can be found in [this application](https://snack.expo.io/@rrobbes/saymysteps), which access the sensors to showcase a variety of usages (not necessarily useful ones!). It also shows that one can define **custom hooks** to use sensors more easily.
 
-A second example is more useful, as it may help you not suffer from neck pain in the future. The
+A second example is more useful, as it may help you not suffer from neck pain in the future. 
 
 ## Location
 
