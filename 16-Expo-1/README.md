@@ -10,6 +10,22 @@ To use them, the most important thing is to simply read the documentation. Howev
 
 A lot of the APIs that are included with Expo rely on permissions (as they access sensitive information), or other functionality that relies on async functions. For all of these, remember to use the useEffect hook, which allows you to render a component initially, execute a callback after rendering (e.g., asking for a permission, fetching data), which may then change the state of the component, causing it to re-render. See the [previous class on useEffect](https://github.com/rrobbes/EngineeringOfMobileSystemsV2/blob/main/15-Effect/README.md).
 
+Of note, several APIs have subscriptions to event handlers. In these cases, it is important to **unsubscribe** when the component is unmounted or the effect is stopped. This is one of the use cases of the "cleanup functions" of `useEffect`. For instance, here is how to subscribe and unsubscribe to an event handler of when the app goes in the background/foreground:
+
+```typescript
+useEffect(() => {
+    // the effect sets up the event subscription
+    AppState.addEventListener('change', _handleAppStateChange);
+
+    // and returns a "cleanup function" that unsubscribes the event handler
+    return () => {
+      AppState.removeEventListener('change', _handleAppStateChange);
+    };
+  }, []);
+  ```
+  
+  The complete example (with the actual even handler) is [here](https://docs.expo.io/versions/latest/react-native/appstate/)
+
 ## Degrade Gracefully
 
 For many of these APIs, acquiring some resources may not always succeed. Users may decline permissions. Their hardware may not support all the latest sensors. They may be in a location where the internet is slow, or not available. For all of these reasons, if possible, do not rely fully on a feature to be present, but try to have a "plan B" for when the most advanced features are absent. The application may be less convenient to use, but it should hopefully still be usable.
@@ -54,7 +70,7 @@ Mobile devices have a relatively limited amount of storage, memory, and battery.
 
 Desktop OSes have swap space: when the applications need to much resources, the OS can decide to move some of their memory to swap space (essentially, dumping the memory contents on the hard disk), to free some RAM for other applications. This allows to keep a lot of applications open at the same time, at the cost of slowdowns when applications that were swapped out of memory are re-activated.
 
-In mobile, this does not work since both storages are constrained. Moreover, writing and reading large quantitie of data from permanent storage (e.g., the memory of an entire process, which can be hundreds of megabytes) regularly would be harmful for the battery life.
+In mobile, this does not work since both storages and memory are constrained. Moreover, writing and reading large quantitie of data from permanent storage (e.g., the memory of an entire process, which can be hundreds of megabytes) regularly would be harmful for the battery life.
 
 Thus, mobile OSes have a different way of handling memory resource issues. When memory runs low, **they can terminate applications**. You may have noticed when multitasking that occasionally, applications appear to relaunch, not resume the execution. Essentially, **your application may be terminated by the OS at any time**, particularly when it is inactive. 
 
@@ -66,7 +82,7 @@ An additional advantage of this strategy for the OS, is that it forces developer
 
 For instance, in the contact app, if we wanted to "save" a list of 1,000,000 randomly generated contacts (I know, this is absurd!), we don't need to actually save them. The only information we would need to save is the random seed that was used to generate the random contacts. We can go from several megabytes to just a few bytes.
 
-A good moment to persist important data from your App is when it becomes inactive. The OS normally does not usually terminates the active application; rather it will usually terminate inactive applications in the background to free RAM for the active application. The React Native library AppState (see above) can be used to receive notifications of when the App goes in the background and foreground, through callbacks. 
+A good moment to persist important data from your App is when it becomes inactive (unfortunately, you will not receive a callback when the app is about to leave without "ejecting" from Expo). The OS normally does not usually terminates the active application; rather it will usually terminate inactive applications in the background to free RAM for the active application. The React Native library AppState (see above) can be used to receive notifications of when the App goes in the background and foreground, through callbacks. 
 
 ## AsyncStorage
 
@@ -207,6 +223,7 @@ It is also possible to have a closer integration of the functionality in the app
 - [ImagePicker](https://docs.expo.io/versions/latest/sdk/imagepicker/) provides access to the photo library; see also [MediaLibrary](https://docs.expo.io/versions/latest/sdk/media-library/) 
 - [Sharing](https://docs.expo.io/versions/latest/sdk/sharing/) opens a share sheet to send files to other applications.
 - [Audio/Video](https://docs.expo.io/versions/latest/sdk/av/) allows for audio/video playback. [Assets](https://docs.expo.io/versions/latest/sdk/asset/) and [FileSystem](https://docs.expo.io/versions/latest/sdk/filesystem/) may be useful in conjunction with this.
+- [Notifications](https://docs.expo.io/versions/latest/sdk/notifications/) to handle local notifications (e.g. schedule a notification as a "reminder" at a later point in time), as well as **push notifications** from a server (e.g., when something important happens when the app is in the background, but has received new data). Note that it is quite possible that users decline to receive notifications (I very often do!), so do not depend on this to be always accepted.
 
 
 ## Accessing device data
