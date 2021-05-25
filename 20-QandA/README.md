@@ -21,3 +21,13 @@ I'll do my best!
 ### Is it mandatory to do the project in this session?
 
 Yes. You have to pass the project before passing the exam. That's how things work. Note that if you hand in the project but do not pass the exam, you can "keep" your project grade for some time (I believe, not 100% sure, it's one year).
+
+## "Technical" questions
+
+### difference between useState variants
+
+```typescript
+const [thing, setThing] = useState("");
+const [thing, setThing] = useState<String>("");
+```
+
