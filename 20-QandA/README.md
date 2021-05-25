@@ -121,4 +121,25 @@ Another way to split things up is to use custom hooks, which allow to separate l
 
 As a guideline, my impression is that if a component has more than 3 or 4 state variables, it starts to become "too big"; in that case you should try to split it up. 
 
+### Could you please talk again about useState and useEffect? 
+
+useState allows us to define persistent state in a component. The state persists across re-renders. Unlike other means to have state, useState has a special property, which is that if the state changes, this causes the component to re-render, which ensures that the component always has the latest state available, no matter what. 
+
+useEffect allows us to run code that would take too long to execute while we are rendering a component, such as async code (web queries, etc). The component is rendered, and effects are executed after rendering. Once the results of the code come in, the effect can change the state of the component, which can cause to re-render, allowing us to see the results of this code. For instance:
+
+- render an initial version of the component
+- execute a query to fetch new data
+- get the data
+- set the state
+- re-render the component with new data
+
+useEffect has an array of dependencies so that it knows when to reun the effect again (when the dependencies change), and support "cleanups" when a new effect is executed, if necessary.
+
+### Context API
+
+The context API essentially allows us to share state between several components. Otherwise, each component would have it's version of the state. Usually we want the components to NOT share their state, but sometimes we do. In this case, we use context. If the context contains pieces of react state, then the components that use the context will be re-rendered when this react state changes.
+
+### Lists with nested objects
+
+Lists can contain arbitrarily complex objects. If one wants to produce a new version of the list, the `...` operator is useful to copy parts of lists and/or objects. See one of the previous Q and As for this. If the question was about something else, please let me know!
 
