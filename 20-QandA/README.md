@@ -35,3 +35,17 @@ const [thing, setThing] = useState<string>("");
 ```
 The second one has a typescript type annotation, which makes it much easier for typescript to figure out the necessary types. TS "knows" that `thing` is of type `string`, and it can use this information. TS for instance will complain if you do `setThing(42)`, since `42` is not a string. The second one is recommended and will make your code more reliable.
 
+Additional useState variants (reminder):
+
+```typescript
+// you can provide a function to compute the initial value
+const [thing, setThing] = useState<string>(() => "");
+
+// setThing can take as argument a callback, that will take as argument the previous version of the state
+
+setThing((oldThing: string) => {
+  const newThing = "new " + oldThing
+  return newThing
+  })
+  ```
+
