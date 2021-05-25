@@ -25,7 +25,7 @@ General Software Engineering principles should be followed. These include:
 
 **Information hiding in React Native**: As mentioned earlier in the class, several critical design decisions, such as how navigation and state management are implemented, should be hidden from most React Components. In particular, a select few components (Screen components) should be in charge of handling navigation, and they may also be in charge of state management as well, given that their reusability is already limited. This would allow to make applications that better adapt to various layout much easier, by re-implementing screen components for a tablet, for instance, while re-using other components. 
 
-**Separate UI from Core logic**: even in a monolithic application, the logic should not be mixed with the UI. Rather, a Core should be implemented, that does not feature a UI at all. Not that **custom hooks** can be used to separate UI from the logic too, if relevant to the use case.
+**Separate UI from Core logic**: even in a monolithic application, the logic should not be mixed with the UI. Rather, a Core should be implemented, that does not feature a UI at all. Note that **custom hooks** can be used to separate UI from the logic too, if relevant to the use case.
 
 **Handle data updates with React State or State Management**: Queries to servers should be separated from the core logic as well. Using state management (including react state), does however make it easier to update the application when new data comes in (with `useEffect` and `useState`).
 
