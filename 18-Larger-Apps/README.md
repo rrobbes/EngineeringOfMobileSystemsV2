@@ -29,4 +29,4 @@ General Software Engineering principles should be followed. These include:
 
 **Handle data updates with React State or State Management**: Queries to servers should be separated from the core logic as well. Using state management (including react state), does however make it easier to update the application when new data comes in (with `useEffect` and `useState`).
 
-**Make components as small as possible**: It is much better to split a component in several smaller components, to increase reuse opportunities. Likewise, extracting logic in custom hooks also helps with reusability.
+**Make components as small as possible**: It is much better to split a component in several smaller components, to increase reuse opportunities. Likewise, extracting logic in custom hooks also helps with reusability. Finally, smaller data containers are also more reusable, and can lead to performance improvements.
