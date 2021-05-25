@@ -76,3 +76,34 @@ For example I have a tab navigator with 3 pages and I want to make one button fr
 => Nesting should work. I'm missing more details to answer it effectively. 
 [Nesting API documentation](https://reactnavigation.org/docs/nesting-navigators/)
 
+### I would like to know better how to handle state from a child component to a parent. 
+
+For example, if I have a Form component that contains text fields (f.e. For Name and Surname), and I have some actions I perform on these input values in my Form Component but also in a Parent Component (f.e. a general Home Component that contains our Form), how would I handle something like this?  
+
+=> The general issue is "how can the parent component know about the data if it is in the child component?". Basically what you want to do here is to pass a callback from the Parent Component to the Form Component. The Form component will call the callback when the data  is "ready", which will execute code from the Parent component.
+
+```typescript
+
+type StringCallback = (arg: string) => void
+
+const Child = ({onDataReady}:{onDataReady:StringCallback}) => {
+    const [text, setText] = useState<string>("text field data")
+    
+    // callback for a button in the rendered code
+    const onPress = () => {
+        onDataReady(text)
+    }
+    
+    return //...
+}
+
+const Parent = () => {
+    const handleIncomingData = (data: string) => {
+        // ...
+    }
+
+    return <Child onDataReady={handleIncomingData} />
+}
+
+### For some components I happen to use too many useState variables; which are some of the available alternatives or solutions that could help me reduce them?
+
