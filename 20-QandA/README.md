@@ -22,6 +22,13 @@ I'll do my best!
 
 Yes. You have to pass the project before passing the exam. That's how things work. Note that if you hand in the project but do not pass the exam, you can "keep" your project grade for some time (I believe, not 100% sure, it's one year).
 
+### Do we explicitly have to deliver the project as snack link? Can we just send the folder where you have to run only npm install?
+
+I would much prefer snack links. Put yourselves in the shoes of the guy that has to correct something like 25+ projects. Everything that you can do to help me is great.
+
+Note that you can import a project from github, directly in a snack. Please try to do this.
+
+
 ## "Technical" questions
 
 ### difference between useState variants
