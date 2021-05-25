@@ -42,6 +42,13 @@ If you're alone, you only need to do the functionality of the "alone" requiremen
 
 Yes. It's much better than the opposite (working on web but not on ios/android). I will try on devices/simulators.
 
+### Could you provide some further information about how you will grade the projects? F.e. the importance you will give to how we implement the requested functionalities or the weight you will assign to how we structure our app, etc. What are key elements you'll evaluate in order to grade us?
+
+The key elements for grading will be:
+
+- The functionality of the project (how far did you go?). You will not fail if you're missing a few bits of functionality.
+- Also, the programmign style is important. Try to follow the principles seen in class, to develop components that are reusable and not too big, in particular.
+- If possible, try to be cross-platform (but in case you can't, for this it is not as important as the other two criteria).
 
 ## "Technical" questions
 
