@@ -69,4 +69,10 @@ setThing((oldThing: string) => {
   return newThing
   })
   ```
+  
+### How can I integrate a tab navigator with another navigation form?   
+For example I have a tab navigator with 3 pages and I want to make one button from one page to another (not tabbed page) but with NOT TAB button, hence I need another navigation form for example a StackNavigator, but its hard to integrate both. I read the documentation regarding nested navigators but its super complicated :(
+
+=> Nesting should work. I'm missing more details to answer it effectively. 
+[Nesting API documentation](https://reactnavigation.org/docs/nesting-navigators/)
 
