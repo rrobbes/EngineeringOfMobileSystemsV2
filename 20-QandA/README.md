@@ -34,6 +34,15 @@ I can test with an Android Emulator easily. If you can try out on both platforms
 
 If you are aware of an incompatibility or simply have some doubts about a specific incompatibility, do let me know. Write it in some kind of "readme" file in the project.
 
+### I'm doing the project alone. So do I have to do 'only' the requirements for everyone to get the maximum points or can I get extra points for doing the requirements dedicated to group works?
+
+If you're alone, you only need to do the functionality of the "alone" requirements to get full points on functionality. If you do more than that (e.g. group requirements while alone), I will consider it in some ways (I might be more lenient on style issues, and/or a small bonus). For sure it's going to be a good learning experience for you!
+
+### Is it okay if a component is not working on the web in expo but both in android and ios?
+
+Yes. It's much better than the opposite (working on web but not on ios/android). I will try on devices/simulators.
+
+
 ## "Technical" questions
 
 ### difference between useState variants
