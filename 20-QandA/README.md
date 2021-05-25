@@ -94,7 +94,7 @@ const Child = ({onDataReady}:{onDataReady:StringCallback}) => {
         onDataReady(text)
     }
     
-    return //...
+    return // render a text field that uses the text, plus a "submit" button with onPress as callback...
 }
 
 const Parent = () => {
@@ -104,6 +104,14 @@ const Parent = () => {
 
     return <Child onDataReady={handleIncomingData} />
 }
+```
 
 ### For some components I happen to use too many useState variables; which are some of the available alternatives or solutions that could help me reduce them?
+
+The answer in general would be to split a component in several smaller components. One thing that might make this difficult is if some components need to access some "data" from children components. See above for how to handle these cases with callbacks.
+
+Another way to split things up is to use custom hooks, which allow to separate logic from the UI.
+
+As a guideline, my impression is that if a component has more than 3 or 4 state variables, it starts to become "too big"; in that case you should try to split it up. 
+
 
