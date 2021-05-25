@@ -26,8 +26,11 @@ Yes. You have to pass the project before passing the exam. That's how things wor
 
 I would much prefer snack links. Put yourselves in the shoes of the guy that has to correct something like 25+ projects. Everything that you can do to help me is great.
 
-Note that you can import a project from github, directly in a snack. Please try to do this.
+Note that you can import a project from github, directly in a snack. Please try to do this. If you have technical issues that prevent you from using a snack, then let me know.
 
+### Incompatibilities between iOS and Android
+
+I can test with an Android Emulator easily. If you can try out on both platforms via simulators, it's of course better. Try to find a "plan B". Note that you can perform conditional rendering based on the platform you are on. To use platform-specific code, have a look at [this part of the documentation](https://reactnative.dev/docs/platform-specific-code)
 
 ## "Technical" questions
 
