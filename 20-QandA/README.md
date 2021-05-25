@@ -30,7 +30,9 @@ Note that you can import a project from github, directly in a snack. Please try 
 
 ### Incompatibilities between iOS and Android
 
-I can test with an Android Emulator easily. If you can try out on both platforms via simulators, it's of course better. Try to find a "plan B". Note that you can perform conditional rendering based on the platform you are on. To use platform-specific code, have a look at [this part of the documentation](https://reactnative.dev/docs/platform-specific-code)
+I can test with an Android Emulator easily. If you can try out on both platforms via simulators, it's of course better. Try to find a "plan B". Note that you can perform conditional rendering based on the platform you are on. To use platform-specific code, have a look at [this part of the documentation](https://reactnative.dev/docs/platform-specific-code).
+
+If you are aware of an incompatibility or simply have some doubts about a specific incompatibility, do let me know. Write it in some kind of "readme" file in the project.
 
 ## "Technical" questions
 
