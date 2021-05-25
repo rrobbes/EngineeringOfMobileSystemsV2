@@ -59,7 +59,7 @@ One of the main performance issues with React apps is rerendering too often. The
 
 Changes to props: some props change do not impact the component. But if they change, it will re-render anyways. The easiest "fix" is to not subscribe to unnecessary parts of the state. For instance, screenProps are shared for all the screens, even if most screens don't need them. Similarly, props that are passed along to sub-components may cause re-renders. 
 - For both of these cases, state management may help performance (e.g. with Unstated, components can subscribe to specific containers, while Mobx uses the observer pattern for performance).
-- As an optimization, shouldComponentUpdate could be implemented for a component. The component can then know that some props should not cause re-renders, and skip an update then. Anotother optimization in some cases is to inherit from React.PureComponent, not React.Component
+- The `useMemo` hook can be used to cache some computation, if it has not changed, which might also be useful for performance.
 - Ensuring that React diffs component with keys also impact the performance vs not having keys. So, if you have this warning, respect it!
 
 Unnecessarily changing props: from the other side: if there are no reason to change the props, don't change them to avoid re-renders. For instance, if you are creating a new object literal and passing it as a prop during render, you will re-render, even if the prop is not really changing. If a callback is an arrow function that is created at render time, it will be different each time. Similarly, if the style of a component is inline (not using StyleSheet), it will be considered as a new object, and may cause unnecessary re-renders.
