@@ -2,6 +2,10 @@
 
 In general building a larger application follows regular software engineering principles, although sometimes they are more specific to the context of mobile applications, including React Native's particularities.
 
+## Examples
+- [2048](https://snack.expo.io/@rrobbes/2048), a simple game that has a core separated from the UI (even if everything is in a single file for convenience).
+- [NearMePedia](https://snack.expo.io/@rrobbes/nearmepedia), a larger scale application using sensors, web services, storage, persistence, navigation, and several components, separated from a core of functionality.
+
 ## General SE Principles
 General Software Engineering principles should be followed. These include:
 - **Cohesion and coupling:** each module in the system should have a high cohesion (components of the module are coherent with each other), and a low coupling with other modules (they interact as little as possible with other modules). 
