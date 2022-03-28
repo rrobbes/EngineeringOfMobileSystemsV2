@@ -43,7 +43,7 @@ The game will have small differences with the original. First, it can be played 
 
 **Functional programming** Your project should, as much as possible, follow functional programming principes. Functions should be small, do one thing only, and should not modify their inputs. 
 - Instead of changing an input, return an updated version of your input as the output of the function.  Remember that the spread operators in Javascript can be used to make copies of objects and lists, which will help you for this.
-- An example of doing one thing only would be that instead of directly printing to the console, you should defined functions that format the data in the correct way, and define separate functions that actually print on the console. 
+- An example of doing one thing only would be that instead of directly printing to the console, you should define functions that format the data in the correct way, and define separate functions that actually print on the console. 
 
 **Typescript** Your project should, as much as possible, use type annotations. At the very least, any data structure you define should have a type definition, and the functions you define should have type annotations for their arguments and return types.
 
