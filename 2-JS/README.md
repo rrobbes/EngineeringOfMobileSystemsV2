@@ -98,7 +98,7 @@ Scope refers to how a declared variable is visible in a program. JS variables (d
 
 An undeclared variable will be declared as a global variable, which can lead to subtle and hard to track bugs.
 
-**Overall: `var` is extremely confusing and should not be used. ES6 Javascript has much better alternatives. I repead: do not use `var`**
+**Overall: `var` is extremely confusing and should not be used. ES6 Javascript has much better alternatives. I repeat: do not use `var`**
 
 ### Strict mode
 Strict mode is an evaluation mode for Javascript that is less forgiving of errors. Errors will be thrown instead of being silently dealt with. Code that is in ES6 modules is in strict mode, so most of the code you will write will be in strict mode. See more on strict mode [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
