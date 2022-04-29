@@ -48,7 +48,13 @@ https://replit.com/@RomainRobbes/WordleSolution#index.ts
 As with the previous assignment, style considerations are important. General things to watch are:
 
 - Keep your components small and reusable.
-- In particular, React Native components can have state, unlike in pure functional programming. However usage of state should be limited to the strictly necessary.
+- In particular, React Native components can have state, unlike in pure functional programming. However usage of state should be limited to the strictly necessary. Having more than a handful of state variables (or very complex state objects) in a component is usually a sign that the component is too large.
+- Keep your style separate from the code of the components via style sheets.
+
+You should separate, as much as possible, the logic of the application from the UI. You can see an example of an application with a functional core independent of the UI here:
+https://snack.expo.dev/@rrobbes/2048
+
+Lines 1 to 191 are the "logic" of the game, independent of the React Native UI. The remaining lines (lines 192 to 310) use the functional core and render its state with react native components (in this particular case, the React Native code is somewhat more complex, since it defines animations and use a few more advanced APIs, so don't worry about this---although this might be useful if you would like to learn about how to define basic animations).
 
 # Handing in the assignment 
 
