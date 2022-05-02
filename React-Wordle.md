@@ -42,6 +42,8 @@ You also need most of the functionality of the console-based wordle game (e.g., 
 - Or, you can choose to start from the assignment solution, which is available here:
 https://replit.com/@RomainRobbes/WordleSolution#index.ts
 
+In any case, I recommend that you start from the following starter code: https://snack.expo.dev/@rrobbes/react-wordle-starter . It has a few differences from the previous starter code, most notably in terms of how the data (answers and valid words) is defined. The previous version was reading this data through a library, to avoid using Javascript's async functionality. Unfortunately this library does not work with React Native, so the easier solution is to define the data directly as Javascript arrays that can be imported. Feel free to move code from the previous solution to the new starter code if you wish.
+
 
 ## Style considerations
 
