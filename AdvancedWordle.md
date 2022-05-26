@@ -2,6 +2,8 @@
 
 The goal of this assignment is to extend the second version of the Wordle game, written in React Native, to use more advanced parts of the Expo API. In particular, we will focus on APIs that allow to interact with servers (to send or receive data), and APIs that use device sensors. Many of these APIs require the usage of *async* operations, which in React Native requires the usage of the *useEffect* hook. Some of the tasks may require the use of *Permissions*, which is also an Async operation. The assignment consists of several tasks, described below.
 
+Note: since some of these tasks rely on device sensors, they may not work very well on the web client. You should try them on an actual device to test them properly.
+
 ## Previous Assignment 
 This assignment requires an existing version of Wordle/Dordle as basis. As with the second assignment, you can either use the previous assignment, or the solutions to assignment 2, which are available:
 - Wordle: https://snack.expo.dev/@rrobbes/wordle-solution
@@ -76,6 +78,14 @@ Implement a UI to issue a challenge to your friends. The idea is the following:
 - The QR Code is displayed on screen, a second user can scan it with their phone camera 
 - This opens the application on the other phone, which receives the data, creates the game, and starts it
 - If the game is won, the user gets the option to issue a challenge back
+
+
+Notes regarding the QR code: The string URL that I refer to is not not the web url of the snack project, but rather a URL that points to the expo client. You can use the Linking API for that. 
+https://github.com/rrobbes/EngineeringOfMobileSystemsV2/tree/main/16-Expo-1#linking
+
+The other option (perhaps a bit simpler), is to embed a QR Code scanner in the application itself. In that case the application is already open, so that makes the problem a bit simpler.
+https://github.com/rrobbes/EngineeringOfMobileSystemsV2/tree/main/17-Expo-2#cameras-and-qr-codes
+
 
 ## Advanced Wordnik integration (2 pts)
 
