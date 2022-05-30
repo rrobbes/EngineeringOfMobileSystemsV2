@@ -67,7 +67,9 @@ Would be shared as:
 
 The sharing format is actually a text string, using Unicode Characters to display colored squares. For instance, this "yellow square" character (https://emojipedia.org/large-yellow-square/).
 
-The goal of this task is thus to share your game, using the [Expo share API](https://docs.expo.dev/versions/latest/sdk/sharing/), to a variety of services of your choice (e.g. social media). If you implemented Dordle, then the sharing should also work with it.
+The goal of this task is thus to share your game, using the [React Native Share API](https://reactnative.dev/docs/share), to a variety of services of your choice (e.g. social media). If you implemented Dordle, then the sharing should also work with it.
+
+**Note:** A previous version of the assignment recommended the [Expo share API](https://docs.expo.dev/versions/latest/sdk/sharing/). However the React Native Share API is simpler to use, so it is recommended instead. In case you have already implemented this with the Expo share API, you don't need to redo it; both APIs are usable.
 
 ## Challenges (2 pts)
 
@@ -90,9 +92,10 @@ https://github.com/rrobbes/EngineeringOfMobileSystemsV2/tree/main/17-Expo-2#came
 ## Advanced Wordnik integration (2 pts)
 
 This extension deepens the Wordnik integration. The game does not use the pre-made lists of words to select words or to check if they are eligible. Instead:
-- The word to guess is either the "Word of the day" or a random word of a minimum length of 5 (but can be longer)
+- The word to guess is either the "Word of the day" or a random word of a minimum length of 5 (but can be longer).
+- If a random word has characters that are not on the keyboard (e.g., dashes, accented characters), then it is discarded and a new word is selected.
 - The game supports words that are longer than 5 character. 
-- Longer words are allowed more guesses: the number of guesses is equal to the number of letters plus 1, with a maximum of 10 for a single word.
+- Longer words are allowed more guesses: the number of guesses is equal to the number of letters plus 1, with a maximum of 10 for a single word. In case a player is playing a Dordle game, the words can be smaller (e.g., a maximum of 7 or 8 characters is possible).
 - Guesses are checked by wordnik: any word that has a definition is allowed.
 - Guesses that are shorter than the word are allowed, if they are valid.
 
