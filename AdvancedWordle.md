@@ -92,15 +92,17 @@ The other option (perhaps a bit simpler), is to embed a QR Code scanner in the a
 https://github.com/rrobbes/EngineeringOfMobileSystemsV2/tree/main/17-Expo-2#cameras-and-qr-codes
 
 
-## Advanced Wordnik integration (2 pts)
+## Advanced Dictionary integration (2 pts)
 
-This extension deepens the Wordnik integration. The game does not use the pre-made lists of words to select words or to check if they are eligible. Instead:
+This extension deepens the Dictionary integration. The game does not use the pre-made lists of words to select words or to check if they are eligible. Instead:
 - The word to guess is either the "Word of the day" or a random word of a minimum length of 5 (but can be longer).
 - If a random word has characters that are not on the keyboard (e.g., dashes, accented characters), then it is discarded and a new word is selected.
 - The game supports words that are longer than 5 character. 
 - Longer words are allowed more guesses: the number of guesses is equal to the number of letters plus 1, with a maximum of 10 for a single word. In case a player is playing a Dordle game, the words can be smaller (e.g., a maximum of 7 or 8 characters is possible).
 - Guesses are checked by wordnik: any word that has a definition is allowed.
 - Guesses that are shorter than the word are allowed, if they are valid.
+
+**Important note**: For this task, using only the Free Dictionary API is not sufficient, as it allows only to look up a single word. WordAPIs or Wordnik should be used instead. WordsAPI does not have a "word of the day" functionality so if you use it, you don't have to implement the "word of the day" functionality.
 
 ## Dordle: eternal edition (2 pts)
 
