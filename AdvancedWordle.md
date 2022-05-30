@@ -98,7 +98,7 @@ This extension deepens the Wordnik integration. The game does not use the pre-ma
 
 ## Dordle: eternal edition (2 pts)
 
-This does not use additional APIs, but should be fun. This is a new game playing mode, that starts like Dordle. When a word in a dordle is completed, it is replaced by a new random word. The user picks three of the existing guesses of the replaced word to "keep". The game resumes with the two remaining words. The game continues in this fashion until it is lost. The goal is to 
+This does not use additional APIs, but should be fun. This is a new game playing mode, that starts like Dordle. When a word in a dordle is completed, it is replaced by a new random word. The user picks three of the existing guesses of the replaced word to "keep". The game resumes with the two remaining words. The game continues in this fashion until it is lost. The goal is to play for as long as possible.
 
 ## Advanced challenges (4 pts, for ambitious teams!)
 
