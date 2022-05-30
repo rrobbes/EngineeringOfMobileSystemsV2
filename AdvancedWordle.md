@@ -29,15 +29,18 @@ For Computer Science students:
 
 The following is the list of tasks to choose from.
 
-## Wordnik integration (mandatory, 2pt)
+## Dictionary API integration (mandatory, 2pt)
 
-Use the wornik API to get more data about the words of the game. The API is here, and can be used for free if you make less than 100 calls per hour:
-- https://developer.wordnik.com/docs
-
-With this API, implement the following:
+Use a dictionary API to get more data about the words of the game. With this API, implement the following:
 - Show the definition of the word to guess after winning or losing.
 - Add a "clue" button that displays the type of the word (noun, verb, adjective, etc)
-- Add a "desperate clue" button, that displays the top example from the wordnik API (without the word in it, obviously!). This button is only available when there is one guess left. 
+- Add a "desperate clue" button, that displays the top example from the API (without the word in it, obviously!). This button is only available when there is one guess left. 
+
+**Important note**: There are several possible APIs that you can choose from. Here are some recommendations:
+- **Free Dictionary API.** this API is the simplest one, and is sufficient if you do the Dictionary API integration, but not the advanced dictionary API integration task (described later in this document):  https://dictionaryapi.dev 
+- **WordsAPI**. This API is appropriate for the two tasks (Dictionary API and Advanced Dictionary API). One only limitation is that it does not have a "Word of the day": https://www.wordsapi.com
+- **Wordnik**. This API is appropriate for the two tasks (Dictionary API and Advanced Dictionary API). However, obtaining a key can take a long time (several days). The API is here, and can be used for free if you make less than 100 calls per hour: https://developer.wordnik.com/docs . A test API key is available here: https://developer.wordnik.com/changelog# .
+
 
 ## Persistence (1 pts)
 
