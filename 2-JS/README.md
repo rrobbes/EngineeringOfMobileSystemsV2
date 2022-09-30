@@ -131,12 +131,12 @@ function square(x) {
 }
 
 // "arrow" function
-const square = x => {
+const square2 = x => {
     return x * x
 }
 
 // shorter version of square
-const square = x => x * x
+const square3 = x => x * x
 
 // anonymous version (this will be useful later)
 x => x * x
@@ -175,15 +175,16 @@ const allThree = ["first", "second", "third"]
 const [one, two, tree] = allThree
 
 const threeSum = ([one, two, three]) => one + two + three
+
 console.log(threeSum(allThree))
 
-// a more verbose alternative, without parameter desctructuring
+// a more verbose alternative, without parameter destructuring
 const alternativeThreeSum = (list) => {
     const [one, two, tree] = list
     return one + two + three
 }
 
-// an even more verbose alternative, without parameter desctructuring
+// an even more verbose alternative, without parameter or assignment destructuring 
 const alternativeThreeSum2 = (list) => {
     const one = list[0]
     const two = list[1]
