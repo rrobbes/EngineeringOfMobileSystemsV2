@@ -29,7 +29,7 @@ The game will be text-based and played in the console. When the game starts, it 
 Each player will be assigned a color, to identify them easily. Some of the text (not all) printed during a turn should match the player's color so that it's clear who is playing.
 At each turn, the program will:
 
-- display the player's current list of combinations and their score, so that they remember what they have left to do. You can use the following paper-based score sheet for inspiration: https://www.eecis.udel.edu/~davis/yahtzee.pdf
+- display the player's current list of combinations and their score, so that they remember what they have left to do. You can use the score sheet below for inspiration
 - throw five dice and show the result to the player
 - the player then inputs the dice that they want to keep (any number, from none to all)
 - the program then re-throws the dice that are not kept, and show the results to the player
@@ -38,9 +38,14 @@ At each turn, the program will:
 - the player then inputs the combinations he wants to fill in with his result
 - the player's score is updated, and the score sheet is displayed again
 
+A possible score sheet would look like this:
+![score sheet example](Score sheet.png)
+
 The program then switches to the next player, until all players have played 13 turns. At this point, the final scores are computed, and the winner is determined, and congratulated.
 
 ## Style example
 
 An example of the style I expect is the tic-tac-toe game: 
 https://replit.com/@RomainRobbes/TicTacToe
+
+Note that the example does not use any for loops, etc. This might be too strict (but a good learning opportunity!). It is fine to use for loops, as long as they are used in a controlled way (see the functional programming class and lab). 
