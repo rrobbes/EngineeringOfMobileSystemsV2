@@ -39,6 +39,8 @@ At each turn, the program will:
 - the player's score is updated, and the score sheet is displayed again
 
 A possible score sheet would look like this:
+
+
 ![score sheet example](Score%20sheet.png)
 
 The program then switches to the next player, until all players have played 13 turns. At this point, the final scores are computed, and the winner is determined, and congratulated.
