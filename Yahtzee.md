@@ -12,6 +12,9 @@ Another player takes their turn, and the process repeats thirteen times, until a
 The detailed rules, along with the combinations and the way their score is calculated, can be found here:
 https://en.wikipedia.org/wiki/Yahtzee
 
+You can play Yahtzee here: 
+https://cardgames.io/yahtzee/
+
 ## Goal of the assignment
 
 The goal of the assignment is to make a computer-based version of Yahtzee, **in TypeScript, using the principles of Functional Programming**. Think carefully about the design of your game, the data structures used, and the type annotations that you will use.
