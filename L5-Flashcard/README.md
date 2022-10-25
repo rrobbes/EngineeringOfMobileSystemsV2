@@ -20,6 +20,20 @@ It does so using the following components:
 
 The goal of this lab is to extend the flash card application in a variety of ways.
 
+## Code understanding task
+
+The first task is to understand how the application works and how it is structured. To do so:
+
+- take a sheet of paper, and list all of the components that the application defines, along with their props, state, and the types of props and states
+- on another sheet of paper, display the components in a tree that matches the way they are organized in the UI
+
+Feel free to use both sides of a single sheet, or a fancy tablet, instead :-).
+
+Show how control flow affects the application. Annotate on the tree (possibly with different colors):
+- how callbacks are passed down from parents to children components
+- how these callbacks change the state of the applications 
+- how changes of state change the tree of the application
+
 ## Starter task
 
 Show some statistics while reviewing the cards in a deck. Show the number card reviewed, the number of cards left, and the number of  correct and incorrect guesses. These statistics should be defined in an independent component, that can be shown or hidden by the user.
