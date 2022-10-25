@@ -36,7 +36,9 @@ Show how control flow affects the application. Annotate on the tree (possibly wi
 
 ## Starter task
 
-Show some statistics while reviewing the cards in a deck. Show the number card reviewed, the number of cards left, and the number of  correct and incorrect guesses. These statistics should be defined in an independent component, that can be shown or hidden by the user.
+Show some statistics while reviewing the cards in a deck. Show the number of cards reviewed, the number of cards left, and the number of  correct and incorrect guesses. These statistics should be defined in an independent component, that can be shown or hidden by the user.
+
+Another possible starter task is to better style the components so that the card looks more like a an actual card.
 
 ## Editing a deck
 
