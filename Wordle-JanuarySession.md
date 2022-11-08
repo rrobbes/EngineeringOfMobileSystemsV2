@@ -1,6 +1,6 @@
 # Assignment for January/February 2023 exam session: React Native Wordle/Dordle, advanced version
 
-*This assignment is only for students that signed up for the course before this semester (those that are in the 2021/2022 course on Teams). If you are a CS student that signed up for the course for the first time this semester (you are in the 2022/2023 team), please ignore this. *
+**This assignment is only for students that signed up for the course before this semester (those that are in the 2021/2022 course on Teams). If you are a CS student that signed up for the course for the first time this semester (you are in the 2022/2023 team), please ignore this.**
 
 
 The goal of this assignment is to extend the second version of the Wordle game, written in React Native, to use more advanced parts of the Expo API. In particular, we will focus on APIs that allow to interact with servers (to send or receive data), and APIs that use device sensors. Many of these APIs require the usage of *async* operations, which in React Native requires the usage of the *useEffect* hook. Some of the tasks may require the use of *Permissions*, which is also an Async operation. The assignment consists of several tasks, described below.
