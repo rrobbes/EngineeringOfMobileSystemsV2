@@ -49,7 +49,7 @@ Define a "deck editor" component, that allows the following operations:
 - allow for the edition of an existing card
 - allow for the renaming of a deck
 
-The main application should allow to select a deck either for reviewing flashcards, or to edit the deck. Any change to the data structure should persist if you leave the application. Hint: give an id to components to allow the name of a deck to be edited. 
+The main application should allow to select a deck either for reviewing flashcards, or to edit the deck. Any change to the data structure should persist if you leave the screen (e.g., if you switch from reviewing one card deck to reviewer another one). Hint: give an id to components to allow the name of a deck to be edited. Note that at this stage, we don't know enough (yet) to make changes to the data persist if you leave or relaunch the application.
 
 ## Going further
 After this you can go further, in the following ways:
